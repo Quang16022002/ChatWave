@@ -1,0 +1,48 @@
+.login {
+    align-items: center;
+   height: 100vh;
+    background-image: url('../../assets/bglogin.png'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-img {
+    width: 100%;
+    border-radius: 25px 0 0 25px;
+}
+.login-right {
+    background-color: white;
+    border-radius:  0 25px 25px 0;
+}
+.login-right > img {
+    width: 200px;
+    border-radius: 25px;
+    float: right;
+}
+.input-item > input {
+    width: 90%;
+    margin-top: 25px;
+    height: 50px;
+    border-radius: 40px;
+    padding: 32px;
+    border: none;
+    border: 2px solid #939090;
+}
+.input-item > input:focus {
+    outline: none;
+}
+.button {
+    width: 90%;
+    margin: 0 auto;
+    background-image: linear-gradient(to right, #F5C46A , #FA8DAE);
+    border: none;
+    height: 60px;
+    margin-top: 25px;
+    border-radius: 30px;
+    font-size: 19px;
+    color: white;
+    font-weight: 600;
+}

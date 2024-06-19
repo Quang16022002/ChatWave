@@ -1,5 +1,5 @@
 const Messages = require("../models/messageModel");
-
+const User = require("../models/userModel");
 module.exports.getMessages = async (req, res, next) => {
   try {
     const { from, to } = req.body;
@@ -37,3 +37,5 @@ module.exports.addMessage = async (req, res, next) => {
     next(ex);
   }
 };
+
+

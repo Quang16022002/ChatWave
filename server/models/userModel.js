@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     min: 8,
   },
+  phone: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   isAvatarImageSet: {
     type: Boolean,
     default: false,
@@ -27,6 +32,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  nickname: {
+    type: String,
+    default: "",
+  },
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], 
+  friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }], 
+  groupInvitations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }] 
 });
 
 module.exports = mongoose.model("Users", userSchema);
