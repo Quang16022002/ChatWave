@@ -3,15 +3,18 @@ const bcrypt = require("bcrypt");
 
 module.exports.login = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const { usernameOrPhone, password } = req.body;
+    const user = await User.findOne({
+      $or: [{ username: usernameOrPhone }, { phoneNumber: usernameOrPhone }],
+    });
     if (!user)
-      return res.json({ msg: "Incorrect Username or Password", status: false });
+      return res.json({ msg: "Tên người dùng hoặc mật khẩu không chính xác", status: false });
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid)
-      return res.json({ msg: "Incorrect Username or Password", status: false });
-    delete user.password;
-    return res.json({ status: true, user });
+      return res.json({ msg: "Tên người dùng hoặc mật khẩu không chính xác", status: false });
+    const userResponse = user.toObject();
+    delete userResponse.password; 
+    return res.json({ status: true, user: userResponse });
   } catch (ex) {
     next(ex);
   }
