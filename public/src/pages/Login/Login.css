@@ -64,6 +64,9 @@
 .input-item > input:hover + .b {
     top: 9px; 
 }
+.b:hover {
+    top :9px;
+}
 .active1 {
     top: 9px;  
 }
