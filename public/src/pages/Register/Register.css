@@ -54,7 +54,7 @@
     transition: top .5s ease; 
 }
 
-.input-item1 > input:focus + .a {
+.input-item1 > input:hover + .a {
     top: 5px; 
 }
 .active {

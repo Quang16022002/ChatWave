@@ -58,7 +58,10 @@
     transition: top .5s ease; 
 }
 
-.input-item > input:focus + .b {
+/* .input-item > input:focus + .b {
+    top: 9px; 
+} */
+.input-item > input:hover + .b {
     top: 9px; 
 }
 .active1 {
