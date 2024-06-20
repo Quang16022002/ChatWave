@@ -23,6 +23,7 @@
     float: right;
 }
 .input-item1 > input {
+    cursor: pointer;
     width: 90%;
     margin-top: 18px;
     border-radius: 40px;
