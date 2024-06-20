@@ -1,0 +1,57 @@
+.Slide_bar {
+    width: 100%;
+    height: 1024px;
+    background-image: linear-gradient(to right, #F5C46A , #FA8DAE) !important;
+    
+  }
+
+  
+  
+  .sb_item {
+    height: 1024px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    width: 100%;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-size: 20px;
+    background-image: linear-gradient(to right, #F5C46A , #FA8DAE) !important;
+
+  }
+  
+  .Slider_text {
+    width: 45px;
+    height: 24px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #8767E1;
+    margin-left: 25px;
+    margin-top: 20px;
+  }
+  
+  .Slide_bar .sb_item .ant-menu-item .ant-menu-item-icon {
+    font-size: 24px !important; /* Tăng kích thước font cho các icon */
+  }
+  
+  .Slide_bar .sb_item .ant-menu-item {
+    line-height: 32px !important; /* Điều chỉnh dòng cho phù hợp với kích thước icon */
+    margin-bottom: 16px; /* Tăng khoảng cách giữa các mục menu */
+  }
+  
+  .Slide_bar .sb_item .ant-menu-item:last-child {
+    margin-bottom: 0; /* Loại bỏ khoảng cách cho mục cuối cùng nếu cần */
+  }
+  
+  .custom-header {
+    background-image: linear-gradient(to right, #F5C46A , #FA8DAE) !important;
+  }
+  
+  /* Ghi đè màu nền của Header từ Ant Design */
+  .ant-layout-header {
+    background-image: linear-gradient(to right, #F5C46A , #FA8DAE)!important;
+  }
