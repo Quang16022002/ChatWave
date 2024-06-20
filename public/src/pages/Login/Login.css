@@ -27,12 +27,42 @@
     margin-top: 25px;
     height: 50px;
     border-radius: 40px;
-    padding: 32px;
+    padding: 32px 38px;
     border: none;
     border: 2px solid #939090;
+    position: relative;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .input-item > input:focus {
     outline: none;
+}
+
+.input-item > input:focus {
+    outline: none;
+    border-color: #F5C46A; /* Màu border khi focus */
+   
+}
+
+.input-item {
+    position: relative;
+}
+
+.b {
+    position: absolute;
+    background-color: white;
+    color: rgb(117, 117, 117);
+    top: 47px;
+    left: 60px;
+    z-index: 1000;
+    padding: 0 7px;
+    transition: top .5s ease; 
+}
+
+.input-item > input:focus + .b {
+    top: 9px; 
+}
+.active1 {
+    top: 9px;  
 }
 .button-login {
     width: 90%;
@@ -50,9 +80,9 @@
 .button-login:hover {
     background-image: linear-gradient(to left, #F5C46A , #FA8DAE);
 }
-.fas {
+.fassignIn {
 position:  absolute;
 left: -60px;
 color: #939090;
-margin-top: 5px;
+margin-top: 5px; 
 }

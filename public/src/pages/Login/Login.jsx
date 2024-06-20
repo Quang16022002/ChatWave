@@ -12,6 +12,10 @@ export default function Login() {
   const navigate = useNavigate();
   const [values, setValues] = useState({ usernameOrPhone: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState({
+    usernameOrPhone: false,
+    password: false,
+  });
   const toastOptions = {
     position: "bottom-right",
     autoClose: 8000,
@@ -66,6 +70,14 @@ export default function Login() {
     }
   };
 
+
+  const handleFocus = (name) => {
+    setIsFocused({ ...isFocused, [name]: true });
+  };
+
+  const handleBlur = (name) => {
+    setIsFocused({ ...isFocused, [name]: false });
+  };
   return (
     <div className="login">
       <ToastContainer />
@@ -83,23 +95,35 @@ export default function Login() {
               <img src={logo} alt="logo" />
               <div className="d-flex flex-column text-center" style={{ marginTop: 200, marginRight: 70 }}>
                 <h1 style={gradientTextStyle}>ChatWave</h1>
-                <span style={{color:"#626262", marginBottom:20}}>Đăng nhập bằng tài khoản Chatwave</span>
+                <span style={{color:"#626262", marginBottom:40}}>Đăng nhập bằng tài khoản Chatwave</span>
                 <div className="input-item" style={{ position: "relative" }}>
                   <input
                     type="text"
-                    placeholder="Tên người dùng hoặc Số điện thoại"
-                    name="usernameOrPhone"  // Fix the name here
+                    name="usernameOrPhone"  
                     onChange={handleChange}
                     min="3"
+                    onFocus={() => handleFocus("usernameOrPhone")}
+                    onBlur={() => handleBlur("usernameOrPhone")}
                   />
+                  <div
+                    className={`b ${values.usernameOrPhone !== "" || isFocused.usernameOrPhone ? "active1" : ""}`}
+                  >
+                    Tên đăng nhập hoặc số điện thoại
+                  </div>
                 </div>
                 <div className="input-item" style={{ position: "relative" }}>
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Mật khẩu"
                     name="password"
                     onChange={handleChange}
+                    onFocus={() => handleFocus("password")}
+                    onBlur={() => handleBlur("password")}
                   />
+                  <div
+                    className={`b ${values.password !== "" || isFocused.password ? "active1" : ""}`}
+                  >
+                    Mật khẩu
+                  </div>
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -113,11 +137,11 @@ export default function Login() {
                       cursor: "pointer"
                     }}
                   >
-                    <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`} />
+                    <i className={`fas fassignIn ${showPassword ? "fa-eye-slash" : "fa-eye"}`} />
                   </button>
                 </div>
                 <button className="button-login" type="submit">Đăng nhập</button>
-                <div style={{ fontSize: 20, marginTop: 10 }}>
+                <div style={{ fontSize: 20, marginTop: 50 }}>
                   Bạn chưa có tài khoản?
                   <Link style={{ textDecoration: "none" }} to="/register">
                     <span style={signIn}>Đăng ký</span>

@@ -1,16 +1,33 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
-import Logo from "../../assets/logo.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerRoute } from "../../utils/APIRoutes";
-import "./Register.css";
 import login from "../../assets/login.png";
 import logo from "../../assets/logo-web.jpg";
+import "./Register.css";
+
 export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showconfirmPassword, setShowconfirmPassword] = useState(false);
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
+  });
+  const [isFocused, setIsFocused] = useState({
+    username: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+    phone: false,
+  });
+
   const navigate = useNavigate();
+
   const toastOptions = {
     position: "bottom-right",
     autoClose: 8000,
@@ -18,13 +35,6 @@ export default function Register() {
     draggable: true,
     theme: "dark",
   };
-  const [values, setValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone:"",
-  });
 
   useEffect(() => {
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
@@ -33,34 +43,35 @@ export default function Register() {
   }, []);
 
   const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
   };
 
   const handleValidation = () => {
-    const { password, confirmPassword, username, email,phone, } = values;
+    const { password, confirmPassword, username, email, phone } = values;
     if (password !== confirmPassword) {
       toast.error(
-        "Password and confirm password should be same.",
+        "Mật khẩu và nhập lại mật khẩu phải giống nhau.",
         toastOptions
       );
       return false;
     } else if (username.length < 3) {
       toast.error(
-        "Username should be greater than 3 characters.",
+        "Tên đăng nhập phải lớn hơn 3 ký tự.",
         toastOptions
       );
       return false;
     } else if (password.length < 8) {
       toast.error(
-        "Password should be equal or greater than 8 characters.",
+        "Mật khẩu phải có ít nhất 8 ký tự.",
         toastOptions
       );
       return false;
     } else if (email === "") {
-      toast.error("Email is required.", toastOptions);
+      toast.error("Email là bắt buộc.", toastOptions);
       return false;
-    }else if (phone === "") {
-      toast.error("Phone is required.", toastOptions);
+    } else if (phone === "") {
+      toast.error("Số điện thoại là bắt buộc.", toastOptions);
       return false;
     }
 
@@ -70,7 +81,7 @@ export default function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation()) {
-      const { email, username, password,phone } = values;
+      const { email, username, password, phone } = values;
       const { data } = await axios.post(registerRoute, {
         username,
         email,
@@ -91,10 +102,19 @@ export default function Register() {
     }
   };
 
+  const handleFocus = (name) => {
+    setIsFocused({ ...isFocused, [name]: true });
+  };
+
+  const handleBlur = (name) => {
+    setIsFocused({ ...isFocused, [name]: false });
+  };
+
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
-        <div  className="container">
+        <ToastContainer/>
+        <div className="container">
           <div className="row">
             <div style={{ padding: 0, margin: 0 }} className="col-md-6">
               <img className="login-img" src={login} alt="login" />
@@ -104,60 +124,125 @@ export default function Register() {
               className="col-md-6 login-right"
             >
               <img src={logo} alt="logo" />
-              <div className="d-flex flex-column text-center" style={{ marginTop: 150, marginRight: 70 }}>
-                <h1>Đăng kí</h1>
+              <div
+                className="d-flex flex-column text-center"
+                style={{ marginTop: 150, marginRight: 70 }}
+              >
+                <h1 style={gradientTextStyle}>ChatWave</h1>
+                <span style={{ color: "#626262", marginBottom: 10 }}>
+                  Đăng ký tài khoản Chatwave của bạn
+                </span>
                 <div className="input-item1">
                   <input
                     type="text"
-                    placeholder="Username"
                     name="username"
+                    value={values.username}
                     onChange={handleChange}
-                    min="3"
+                    onFocus={() => handleFocus("username")}
+                    onBlur={() => handleBlur("username")}
                   />
+                  <div
+                    className={`a ${
+                      values.username !== "" || isFocused.username
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    Tên đăng nhập
+                  </div>
                 </div>
                 <div className="input-item1">
                   <input
                     type="text"
-                    placeholder="Email"
                     name="email"
+                    value={values.email}
                     onChange={handleChange}
-                    min="3"
+                    onFocus={() => handleFocus("email")}
+                    onBlur={() => handleBlur("email")}
                   />
+                  <div
+                    className={`a ${
+                      values.email !== "" || isFocused.email ? "active" : ""
+                    }`}
+                  >
+                    Email
+                  </div>
                 </div>
                 <div className="input-item1">
                   <input
                     type="text"
-                    placeholder="Số điện thoại"
                     name="phone"
+                    value={values.phone}
                     onChange={handleChange}
-                    min="3"
+                    onFocus={() => handleFocus("phone")}
+                    onBlur={() => handleBlur("phone")}
                   />
+                  <div
+                    className={`a ${
+                      values.phone !== "" || isFocused.phone ? "active" : ""
+                    }`}
+                  >
+                    Số điện thoại
+                  </div>
                 </div>
                 <div className="input-item1">
                   <input
-                    type="text"
-                    placeholder="Mật khẩu"
+                    type={showPassword ? "text" : "password"}
                     name="password"
+                    value={values.password}
                     onChange={handleChange}
-                    min="3"
+                    onFocus={() => handleFocus("password")}
+                    onBlur={() => handleBlur("password")}
+                  />
+                  <div
+                    className={`a ${
+                      values.password !== "" || isFocused.password
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    Mật khẩu
+                  </div>
+                  <i
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={`fas eyesignIn ${
+                      showPassword ? "fa-eye-slash" : "fa-eye"
+                    }`}
                   />
                 </div>
-                <div className="input-item1">
+                <div style={{ position: "relative" }} className="input-item1">
                   <input
-                    type="text"
-                    placeholder="Nhập lại mật khẩu"
+                    type={showconfirmPassword ? "text" : "password"}
                     name="confirmPassword"
+                    value={values.confirmPassword}
                     onChange={handleChange}
-                    min="3"
+                    onFocus={() => handleFocus("confirmPassword")}
+                    onBlur={() => handleBlur("confirmPassword")}
+                  />
+                  <div
+                    className={`a ${
+                      values.confirmPassword !== "" || isFocused.confirmPassword
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    Nhập lại mật khẩu
+                  </div>
+                  <i
+                    onClick={() => setShowconfirmPassword(!showconfirmPassword)}
+                    className={`fas eyesignIn ${
+                      showconfirmPassword ? "fa-eye-slash" : "fa-eye"
+                    }`}
                   />
                 </div>
-                
-          
-                <button className="button" type="submit">Đăng kí</button>
-                <div style={{ fontSize: 20, marginTop: 10 }}>
-                  Bạn đã có tài khoản? 
+
+                <button className="button button-signIn" type="submit">
+                  Đăng kí
+                </button>
+                <div style={{ fontSize: 20, marginTop: 20 }}>
+                  Bạn đã có tài khoản?
                   <Link style={{ textDecoration: "none" }} to="/login">
-                    <span style={gradientTextStyle}>Đăng nhập</span>
+                    <span style={signUp}>Đăng nhập</span>
                   </Link>
                 </div>
               </div>
@@ -170,8 +255,15 @@ export default function Register() {
 }
 
 const gradientTextStyle = {
-  background: 'linear-gradient(90deg, #F5C46A, #FA8DAE)',
-  WebkitBackgroundClip: 'text',
-  color: 'transparent',
-  marginLeft:'5px'
+  background: "linear-gradient(90deg, #F5C46A, #FA8DAE)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+  marginTop: "-70px",
+};
+const signUp = {
+  background: "linear-gradient(90deg, #F5C46A, #FA8DAE)",
+  WebkitBackgroundClip: "text",
+  color: "transparent",
+  marginLeft: "5px",
+  marginTop: "10px",
 };

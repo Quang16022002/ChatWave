@@ -24,16 +24,43 @@
 }
 .input-item1 > input {
     width: 90%;
-    margin-top: 5px;
-    height: 5px;
+    margin-top: 18px;
     border-radius: 40px;
-    padding: 32px;
-    border: none;
+    padding: 15px 35px;
+    z-index: 1;
     border: 2px solid #939090;
+    position: relative;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
 .input-item1 > input:focus {
     outline: none;
+    border-color: #F5C46A; /* Màu border khi focus */
+   
 }
+
+.input-item1 {
+    position: relative;
+}
+
+.a {
+    position: absolute;
+    background-color: white;
+    color: rgb(117, 117, 117);
+    top: 35px;
+    left: 60px;
+    z-index: 1000;
+    padding: 0 7px;
+    transition: top .5s ease; 
+}
+
+.input-item1 > input:focus + .a {
+    top: 5px; 
+}
+.active {
+    top: 5px; 
+}
+
 .button {
     width: 90%;
     margin: 0 auto;
@@ -45,4 +72,14 @@
     font-size: 19px;
     color: white;
     font-weight: 600;
+}
+.eyesignIn {
+    color: #939090;
+    position: absolute;
+    margin-top: 38px;
+    margin-left: -8%;
+    z-index: 1002;
+}
+.button-signIn:hover {
+    background-image: linear-gradient(to left, #F5C46A , #FA8DAE);
 }
