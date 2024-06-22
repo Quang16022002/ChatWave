@@ -1,0 +1,39 @@
+.Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .Header-left {
+      h2 {
+        margin: 0;
+        background: linear-gradient(90deg, #e6a327, #FA8DAE);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+    }
+    .Header-center {
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+       
+        
+    }
+    .Header-right {
+        font-size: 28px;
+        > i {
+            color: white;
+            cursor: pointer;
+        }
+        i + i {
+            margin-left: 10px;
+        }
+         img {
+            width: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+         }
+         display: flex;
+         align-items: center;
+         justify-content: center;
+    }
+  }

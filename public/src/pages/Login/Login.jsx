@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { loginRoute } from "../../utils/APIRoutes";
 import "./Login.css";
 import login from "../../assets/login.png";
-import logo from "../../assets/logo-web.jpg";
+import logo from "../../assets/logo-web.png";
 
 export default function Login() {
   const navigate = useNavigate();

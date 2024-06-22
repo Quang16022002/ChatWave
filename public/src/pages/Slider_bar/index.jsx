@@ -1,47 +1,50 @@
-import React from 'react';
-import './style.css';
-import { matchPath } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, Route, Routes } from "react-router-dom";
+import { Layout, Menu, theme } from "antd";
+import logo from "../../assets/logo-web.png";
 
-// Create Owner
-
-import { MenuFoldOutlined, MenuUnfoldOutlined,HomeOutlined,CommentOutlined,FundOutlined,UserAddOutlined,UsergroupAddOutlined, } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
-import { useState } from 'react';
-
-// import img của slider bar
-import sb_img from '../Slider_bar/asset/img/sb_img.png';
-import Header_content from '../Header/Header_content';
-
-import { Link } from 'react-router-dom';
-
-import { useLocation } from 'react-router-dom';
-
+import {
+  HomeOutlined,
+  CommentOutlined,
+  FundOutlined,
+  UserAddOutlined,
+  UsergroupAddOutlined,
+  SettingOutlined,
+  AppstoreAddOutlined,
+  MailOutlined 
+} from "@ant-design/icons";
+import "./style.css";
+import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
+import ChatComponent from "../../components/ChatComponent/ChatComponent";
+import HomeComponent from "../../components/HomeComponent/HomeComponent";
+import InvitationComponent from "../../components/InvitationComponent/InvitationComponent";
 const { Header, Sider, Content } = Layout;
-//props. chi
+
 const Slide_bar = ({ children }) => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState('1');
+  const [collapsed, setCollapsed] = useState(true);
+  const [selectedMenu, setSelectedMenu] = useState("1");
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   const location = useLocation();
 
-  React.useEffect(() => {
-    const OwnerSTR = 'GarageOwner';
-    const ManageSTR = 'GarageManage';
-    const ServiceSTR = 'GarageService';
+  useEffect(() => {
+    const OwnerSTR = "GarageOwner";
+    const ManageSTR = "GarageManage";
+    const ServiceSTR = "GarageService";
 
     if (location.pathname.includes(OwnerSTR)) {
-      setSelectedMenu('1');
+      setSelectedMenu("1");
     }
     if (location.pathname.includes(ManageSTR)) {
-      setSelectedMenu('2');
+      setSelectedMenu("2");
     }
     if (location.pathname.includes(ServiceSTR)) {
-      setSelectedMenu('3');
+      setSelectedMenu("3");
     }
   }, [location.pathname]);
+
   return (
     <Layout>
       <Sider
@@ -49,10 +52,11 @@ const Slide_bar = ({ children }) => {
         className="Slide_bar"
         trigger={null}
         collapsible
-        collapsed={collapsed}>
-
-        <Link to="/"><p className="Slider_text">Menu</p></Link>
-
+        collapsed={collapsed}
+      >
+        <Link to="/">
+          <img style={{ width: 80, margin: "0 auto" }} src={logo} />
+        </Link>
 
         <Menu
           className="sb_item"
@@ -63,71 +67,78 @@ const Slide_bar = ({ children }) => {
           onSelect={({ key }) => setSelectedMenu(key)}
           items={[
             {
-              key: '1',
-              icon: <HomeOutlined  />,
-              label: <Link to="/slide">Trang chủ</Link>,
+              key: "1",
+              icon: <HomeOutlined />,
+              label: "Trang chủ",
             },
             {
-              key: '2',
+              key: "2",
               icon: <CommentOutlined />,
-              label: <Link to="/slide">Tin nhắn</Link>,
+              label: "Tin nhắn ",
             },
             {
-              key: '3',
+              key: "3",
               icon: <FundOutlined />,
-              label: <Link to="/slide">Không biết</Link>,
+              label: "Không biết",
             },
             {
-              key: '4',
-              icon: <UserAddOutlined />,
-              label: <Link to="/slide">Thêm bạn bè</Link>,
+              key: "4",
+              icon: <MailOutlined />,
+              label: "Thông báo",
             },
             {
-              key: '5',
-              icon: <UsergroupAddOutlined />,
-              label: <Link to="/slide">Thêm nhóm</Link>,
+              key: "5",
+              icon: <AppstoreAddOutlined />,
+              label: "Không biết",
+              style: { marginTop: 500 }, 
             },
+            {
+              key: "6",
+              icon: <SettingOutlined />,
+              label: "Cài đặt",
+            },
+            // {
+            //   key: "6",
+            //   icon: <SettingOutlined />,
+            //   label: "Thêm nhóm",
+            // },
+            
           ]}
         />
       </Sider>
-      <Layout className="site-layout">
+      <Layout className="">
         <Header
-          style={{
-            className: "customer-header",
-            padding: 0,
-            background: colorBgContainer,
+            style={{
+              
+              padding:0,
+              background: 'white', 
+            }}
+          >
             
-          }}
-        >
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: 'trigger',
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )}
-
-          <Header_content></Header_content>
-          {/* <Logout></Logout> */}
+        <HeaderComponent/>
         </Header>
 
         <Content
           style={{
-            margin: '24px 16px',
-            // padding: 24,
             minHeight: 280,
             background:
-              selectedMenu === '2' ||
-                selectedMenu === '3' ||
-                selectedMenu === '4'
-                ? '#e6e6e6'
+            selectedMenu === "1" ||
+              selectedMenu === "2" ||
+              selectedMenu === "3" ||
+              selectedMenu === "4"
+                ? `linear-gradient(to bottom, #F5C46A, #FA8DAE)`
                 : colorBgContainer,
           }}
         >
-          {children}
+          {selectedMenu === "1" && <HomeComponent />}
+
+          {selectedMenu === "2" && <ChatComponent />}
+          {selectedMenu === "4" && <InvitationComponent />}
+          {/* {selectedMenu !== '2' && selectedMenu !== '3' && children} */}
         </Content>
       </Layout>
     </Layout>
   );
 };
+
 export default Slide_bar;
