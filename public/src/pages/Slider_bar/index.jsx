@@ -16,8 +16,8 @@ import {
 import "./style.css";
 import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
 import ChatComponent from "../../components/ChatComponent/ChatComponent";
-import HomeComponent from "../../components/HomeComponent/HomeComponent";
 import InvitationComponent from "../../components/InvitationComponent/InvitationComponent";
+import HomePage from "../HomePage/HomePage";
 const { Header, Sider, Content } = Layout;
 
 const Slide_bar = ({ children }) => {
@@ -130,7 +130,7 @@ const Slide_bar = ({ children }) => {
                 : colorBgContainer,
           }}
         >
-          {selectedMenu === "1" && <HomeComponent />}
+          {selectedMenu === "1" && <HomePage />}
 
           {selectedMenu === "2" && <ChatComponent />}
           {selectedMenu === "4" && <InvitationComponent />}

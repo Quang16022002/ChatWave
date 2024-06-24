@@ -5,6 +5,7 @@ import Chat from "./pages/Chat";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Slider from "./pages/Slider_bar/index";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/Chat" element={<Chat />} />
         <Route path="/" element={<Slider />} />
       </Routes>
+      
     </BrowserRouter>
   );
 }
