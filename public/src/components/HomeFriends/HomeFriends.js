@@ -1,9 +1,38 @@
 import React from 'react'
 import './HomeFriends.scss'
-const HomeFriends = () => {
-  return (
-    <div>HomeFriends</div>
-  )
+import UserFriendsComponent from '../UserFriendsComponent/UserFriendsComponent';
+
+const HomeFriends =() => {
+
+
+const userComponents = Array.from({ length: 16 });
+
+return (
+  <div  style={{padding:20}}>
+  <div className="HomeAll-top d-flex justify-content-between">
+    <div  className="HomeAll-top-left d-flex justify-content-between">
+    
+      <p>
+        Bạn bè <span>10</span>
+      </p>
+    </div>
+    <div className="HomeAll-top-right d-flex justify-content-between">
+      <p>Sắp xếp</p>
+      <select>
+        <option>Gần đây</option>
+        <option>Danh sách 03</option>
+        <option>Danh sách 04</option>
+      </select>
+    </div>
+  </div>
+  <div style={{height:'auto'}} className="row">
+  {userComponents.map((_, index) => (
+    <UserFriendsComponent key={index} />
+  ))}
+
+  </div>
+</div>
+)
 }
 
 export default HomeFriends

@@ -1,17 +1,18 @@
 import React from 'react'
-import './HomeGroup.scss'
-import UserGroupComponent from '../UserGroupComponent/UserGroupComponent';
-const HomeGroup = () => {
-  const userComponents = Array.from({ length: 10 });
+import './Homechannel.scss'
+import ChannelComponent from '../../components/ChannelComponent/ChannelComponent'
+const Homechannel = () => {
+  const userComponents = Array.from({ length: 5 });
 
   return (
     <div  style={{padding:20}}>
     <div className="HomeAll-top d-flex justify-content-between">
-      <div  className="HomeAll-top-left d-flex justify-content-between">
-      
-        <p>
-          Nhóm <span>15</span>
+      <div  className="Homechannel-top-left d-flex justify-content-between align-items-center">
+      <i class="fa-solid fa-plus"></i>
+        <p style={{margin:0}}>
+          Tạo kênh mới
         </p>
+        
       </div>
       <div className="HomeAll-top-right d-flex justify-content-between">
         <p>Sắp xếp</p>
@@ -24,7 +25,7 @@ const HomeGroup = () => {
     </div>
     <div style={{height:'auto'}} className="row">
     {userComponents.map((_, index) => (
-      <UserGroupComponent key={index} />
+      <ChannelComponent key={index} />
     ))}
 
     </div>
@@ -32,4 +33,4 @@ const HomeGroup = () => {
   )
 }
 
-export default HomeGroup
+export default Homechannel
