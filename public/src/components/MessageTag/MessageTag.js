@@ -9,8 +9,8 @@ const Messages = () => {
   return (
     <div className='danhba-item'>
       <div className='danhba-phanloai'>
-        <div className='danhba-item-header'>
-          <div className='danhba-item-header-left'>
+        <div className='danhba-item-header' >
+          <div className='danhba-item-header-left' style={{background:'green',color:"white"}}>
           <i class="fa-solid fa-plane-departure"></i>    Du lịch
           </div>
           <div className='danhba-item-header-right'>
@@ -27,7 +27,7 @@ const Messages = () => {
       </div>
       <div className='danhba-phanloai'>
         <div className='danhba-item-header' style={{ borderTop: '2px solid blue' }}>
-          <div className='danhba-item-header-left' style={{ color: 'blue', border: '1px solid blue', borderTop: 'none ' }}>
+          <div className='danhba-item-header-left' style={{background:"blue", color: 'white', border: '1px solid blue', borderTop: 'none ' }}>
           <i class="fa-solid fa-briefcase"></i> Công việc
           </div>
           <div className='danhba-item-header-right'>

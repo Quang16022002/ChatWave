@@ -7,13 +7,13 @@ const Contacts = () => {
   const userComponents = Array.from({ length: 6 });
   
   return (
-    <div className='danhba-item'>
-      <div className='danhba-phanloai'>
-        <div className='danhba-item-header'>
-          <div className='danhba-item-header-left'>
+    <div className='danhba-item-1'>
+      <div className='danhba-phanloai-1'>
+        <div className='danhba-item-header-1'>
+          <div className='danhba-item-header-left-1'>
             <UserOutlined /> Bạn bè
           </div>
-          <div className='danhba-item-header-right'>
+          <div className='danhba-item-header-right-1'>
             <MoreOutlined />
           </div>
         </div>
@@ -25,12 +25,12 @@ const Contacts = () => {
           </div>
         </div>
       </div>
-      <div className='danhba-phanloai'>
-        <div className='danhba-item-header' style={{ borderTop: '2px solid blue' }}>
-          <div className='danhba-item-header-left' style={{ color: 'blue', border: '1px solid blue', borderTop: 'none ' }}>
+      <div className='danhba-phanloai-1'>
+        <div className='danhba-item-header-1' style={{ borderTop: '2px solid blue' }}>
+          <div className='danhba-item-header-left-1' style={{ color: 'blue', border: '1px solid blue', borderTop: 'none ' }}>
             <UserOutlined /> Đồng nghiệp
           </div>
-          <div className='danhba-item-header-right'>
+          <div className='danhba-item-header-right-1'>
             <MoreOutlined />
           </div>
         </div>

@@ -77,9 +77,12 @@
     width: 15%;
     text-align: center;
     
-    color: green;
+    position: relative;
     border: 1px solid green;
     border-top: none;
+    border-right:none !important;
+
+    
 }
 
 .danhba-item-header-right{
@@ -88,4 +91,16 @@
 
 .danhba-item-content{
     padding: 20px;
+}
+
+.danhba-item-header-left::after{
+    content: "";
+        position: absolute;
+        right: 0;                 /* Đặt ngay tại biên phải của tag */
+        top: 0;                   /* Đặt ở đỉnh */
+        width: 0;
+        height: 0;
+        border-style: solid ;
+        border-width: 24px 20px 20px 20px; /* Kích thước của tam giác */
+        border-color: transparent white transparent transparent; /* Màu của tam giác */
 }

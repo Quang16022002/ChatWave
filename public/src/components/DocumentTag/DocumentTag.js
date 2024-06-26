@@ -10,7 +10,7 @@ const Documents = () => {
     <div className='danhba-item'>
       <div className='danhba-phanloai'>
         <div className='danhba-item-header'>
-          <div className='danhba-item-header-left'>
+          <div className='danhba-item-header-left' style={{background:'green',color:"white"}}>
             <UserOutlined /> Web shopify
           </div>
           <div className='danhba-item-header-right'>
@@ -27,7 +27,7 @@ const Documents = () => {
       </div>
       <div className='danhba-phanloai'>
         <div className='danhba-item-header' style={{ borderTop: '2px solid blue' }}>
-          <div className='danhba-item-header-left' style={{ color: 'blue', border: '1px solid blue', borderTop: 'none ' }}>
+          <div className='danhba-item-header-left' style={{background:"blue", color: 'white', border: '1px solid blue', borderTop: 'none ' }}>
             <UserOutlined /> Công ty abc
           </div>
           <div className='danhba-item-header-right'>

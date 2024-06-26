@@ -21,7 +21,7 @@ a{
     width: 100px;
     height: 30px;
     border: 1px solid #F5C46A;
-    border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 5px;
     border-left: none;
 
     text-align: center;
@@ -51,7 +51,7 @@ a{
     text-align: center;
     align-items: center;
     border: 1px solid #F5C46A;
-    border-radius: 10px;
+    border-radius: 7px;
     width: 150px;
     height: 25px;
     color: #F5C46A;
@@ -105,5 +105,5 @@ a{
   .menu-item.active {
     background-color: #F5C46A; /* Màu nền cho mục được chọn */
     color: white; /* Màu chữ cho mục được chọn */
-    border-radius: 5px; /* Bo góc cho mục được chọn */
+    border-bottom-right-radius: 7px ;
   }
