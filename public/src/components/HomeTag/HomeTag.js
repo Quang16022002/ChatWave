@@ -27,15 +27,15 @@ const HomeTag = () => {
         <div className='tag-menu-left'>
           <a className={`menu-item ${currentComponent === 'contacts' ? 'active' : ''}`}
             onClick={() => setCurrentComponent('contacts')}>
-            <BookOutlined />Danh bạ
+            <p><BookOutlined />Danh bạ</p>
           </a>
           <a className={`menu-item ${currentComponent === 'messages' ? 'active' : ''}`}
             onClick={() => setCurrentComponent('messages')}>
-            <MessageOutlined />Tin nhắn
+            <p><MessageOutlined />Tin nhắn</p>
           </a>
           <a className={`menu-item ${currentComponent === 'documents' ? 'active' : ''}`}
             onClick={() => setCurrentComponent('documents')}>
-            <FolderOutlined />Tài liệu
+            <p><FolderOutlined />Tài liệu</p>
           </a>
         </div>
         <div className='tag-menu-right'>
@@ -45,8 +45,8 @@ const HomeTag = () => {
             </div>
           </div>
           <div className='menu-right-2'>
-            <h6>Sắp xếp</h6>
-            <div className='menu-tag-add'>
+            <h5>Sắp xếp</h5>
+            <div className='menu-tag-add' style={{border: '1px solid black'}}>
               Gần đây
             </div>
           </div>
