@@ -91,7 +91,7 @@ color:#eb4e7d
 
 
 .sb_item .ant-menu-item-selected {
-  background-color: rgb(237, 159, 50); /* Xóa màu nền khi item được chọn */
+  background-color: #fff; /* Xóa màu nền khi item được chọn */
 }
 .sb_item .ant-menu-item > .anticon {
   margin-left: -5px;
