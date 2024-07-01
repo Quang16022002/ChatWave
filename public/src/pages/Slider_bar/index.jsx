@@ -15,10 +15,10 @@ import {
 } from "@ant-design/icons";
 import "./style.css";
 import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
-import ChatComponent from "../../components/ChatComponent/ChatComponent";
 import HomePage from "../HomePage/HomePage";
 import CommunityPage from "../CommunityPage/CommunityPage";
 import InvitationPage from "../InvitationPage/InvitationPage";
+import ChatPage from "../ChatPage/ChatPage";
 const { Header, Sider, Content } = Layout;
 
 const Slide_bar = ({ children }) => {
@@ -133,7 +133,7 @@ const Slide_bar = ({ children }) => {
         >
           {selectedMenu === "1" && <HomePage />}
 
-          {selectedMenu === "2" && <ChatComponent />}
+          {selectedMenu === "2" && <ChatPage />}
           {selectedMenu === "4" && <InvitationPage />}
           {selectedMenu === "3" && <CommunityPage />}
 
