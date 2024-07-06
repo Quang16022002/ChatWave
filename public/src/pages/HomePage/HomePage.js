@@ -7,6 +7,7 @@ import HomeGroup from "../../components/HomeGroup/HomeGroup";
 import HomeTag from "../../components/HomeTag/HomeTag";
 import Robot from "../../assets/Robot2.gif";
 import Homechannel from "../HomechannelPage/Homechannel";
+import HomeFolder from "../../components/HomeFolder/homeFolder"
 const HomePage = () => {
   const [currentComponent, setCurrentComponent] = useState("homeAll");
   const [activeIcon, setActiveIcon] = useState("wallet");
@@ -24,6 +25,8 @@ const HomePage = () => {
       setCurrentComponent("homeTag");
     } else if (icon === "channel") {
       setCurrentComponent("homechannel");
+    } else if (icon === "folder"){
+      setCurrentComponent("homeFolder");
     } else {
       setCurrentComponent("homeAll");
     }
@@ -77,7 +80,12 @@ const HomePage = () => {
           ></i>
         </div>
         <div className="Heade-home-right">
-          <i className="fa-solid fa-folder-open"></i>
+          <i
+            onClick={() => handleIconClick("folder")}
+            className={`fa-solid fa-folder-open ${
+              activeIcon === "folder" ? "activeIcon" : ""
+            }`}
+          ></i>
           <i
             onClick={() => handleIconClick("tag")}
             className={`fa-solid fa-tag ${
@@ -94,6 +102,7 @@ const HomePage = () => {
         {currentComponent === "homeFriends" && <HomeFriends />}
         {currentComponent === "homeTag" && <HomeTag />}
         {currentComponent === "homechannel" && <Homechannel />}
+        {currentComponent === "homeFolder" && <HomeFolder/>}
       </div>
     </div>
   );
