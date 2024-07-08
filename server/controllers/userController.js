@@ -98,9 +98,9 @@ module.exports.getDetailUsers = async (req, res, next) => {
     console.log('userId', userId);
     
     const user = await User.findById(userId)
-      .select(["email", "username", "avatarImage", "nickname", "friends", "friendRequests", "groups", "groupInvitations", "_id"])
-      .populate("friends", "username email avatarImage nickname") // Lấy thông tin bạn bè
-      .populate("friendRequests", "username email avatarImage nickname") // Lấy thông tin yêu cầu kết bạn
+      .select(["email", "username","phone", "avatarImage", "nickname", "friends", "friendRequests", "groups", "groupInvitations", "_id"])
+      .populate("friends", "username email avatarImage nickname phone")
+      .populate("friendRequests", "username email avatarImage nickname, phone") // Lấy thông tin yêu cầu kết bạn
       .populate("groups", "name members") // Lấy thông tin nhóm
       .populate("groupInvitations", "name members"); // Lấy thông tin lời mời vào nhóm
     

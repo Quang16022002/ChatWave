@@ -15,7 +15,6 @@ const HomeFriends = () => {
   };
 
   const handleOk = () => {
-    // Handle the submission logic here
     console.log('Phone Number:', phoneNumber);
     setIsModalVisible(false);
   };
