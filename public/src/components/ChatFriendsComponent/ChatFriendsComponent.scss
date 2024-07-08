@@ -24,8 +24,8 @@
 }
 .ChatFriendsComponent-item-body {
     margin-left: 12px;
-    padding: 10px;
-    height: 76%;
+    // padding: 10px;
+    height: 74%;
     display: flex;
     flex-direction: column;
     .ChatFriendsComponent-time {
@@ -34,37 +34,125 @@
         color: white;
         padding: 0px 20px;
         border-radius: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 }
 .ChatFriendsComponent-item-bottom {
-    background-color: blueviolet;
     height: 100%;
     margin-left: 12px;
 
 }
 .ChatFriendsComponent-content-chat-item {
     display: flex;
-    margin-top: 10px;
-
+    padding: 0 10px;
     >img {
         width: 30px;
         height: 30px;
         border-radius: 50%;
     }
     > p{
-        padding: 0;
+       
         margin: 0;
         margin-left: 7px;
         background-color: rgb(255, 224, 233);
         padding: 3px 10px;
         border-radius: 10px;
+        cursor: pointer;
     }
 }
-.ChatFriendsComponent-content-chat-item-me {
-    float: right;
-    background-color: rgb(250, 237, 215);
-    padding: 3px 10px;
-    border-radius: 10px;
-    
 
+    .ChatFriendsComponent-content-chat-item-me {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;   
+    padding: 0 10px;
+    border-radius: 10px;
+    margin: 0;
+    > p {
+        border-radius: 10px;
+        margin: 0;
+        padding: 5px 10px;
+        float: right;
+        background-color: rgb(250, 237, 215);
+        cursor: pointer;
+    }
+  
 }
+.ChatFriendsComponent-content {
+    height: 90%;
+    overflow-y: auto;
+}
+::-webkit-scrollbar {
+    width: 3px; 
+    background-color: rgb(245, 195, 108);
+    border-radius: 5px;
+  }
+
+  .ChatFriendsComponent-item-bottom-icon {
+    border: 1px solid rgb(250, 237, 215);
+    height: 4%;
+
+    .ChatFriendsComponent-item-bottom-icon-left {
+        padding: 0 15px;
+        width: 40%;
+        border-right: 1px solid rgb(250, 237, 215);
+        > i {
+            color: rgb(130, 130, 130);
+            cursor: pointer;
+        }
+        display: flex;
+        align-items: center;
+
+        i + i {
+            margin-left: 10px;
+        }
+    }
+    .ChatFriendsComponent-item-bottom-icon-right {
+            color: rgb(130, 130, 130);
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+        > i {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        > span {
+            font-size: 13px;
+        }
+    }
+  }
+  .ChatFriendsComponent-item-bottom-message {
+    height: 6%;
+  }
+  .ChatFriendsComponent-item-bottom-message-left {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    > input {
+        width: 100%;
+        height: 100%;
+        padding: 0 15px;
+        border: none;
+        &:focus {
+            outline: none;
+        }
+    }
+    > i {
+        color: rgb(252, 186, 18);
+        font-size: 20px;
+        cursor: pointer;
+    }
+  }
+  .ChatFriendsComponent-item-bottom-message-right {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    > i {
+        font-size: 20px;
+        color: rgb(252, 186, 18);
+        cursor: pointer;
+    }
+  }
