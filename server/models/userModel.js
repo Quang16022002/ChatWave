@@ -24,10 +24,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  isAvatarImageSet: {
-    type: Boolean,
-    default: false,
-  },
+ 
   avatarImage: {
     type: String,
     default: "",
@@ -42,4 +39,4 @@ const userSchema = new mongoose.Schema({
   groupInvitations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }] 
 });
 
-module.exports = mongoose.model("Users", userSchema);
+module.exports = mongoose.model("User", userSchema);

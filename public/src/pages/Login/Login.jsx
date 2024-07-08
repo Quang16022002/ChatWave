@@ -10,10 +10,10 @@ import logo from "../../assets/logo-web.png";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [values, setValues] = useState({ usernameOrPhone: "", password: "" });
+  const [values, setValues] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState({
-    usernameOrPhone: false,
+    email: false,
     password: false,
   });
   const toastOptions = {
@@ -35,9 +35,9 @@ export default function Login() {
   };
 
   const validateForm = () => {
-    const { usernameOrPhone, password } = values;
-    if (usernameOrPhone === "") {
-      toast.error("Tên người dùng hoặc số điện thoại là bắt buộc.", toastOptions);
+    const { email, password } = values;
+    if (email === "") {
+      toast.error("Email là bắt buộc.", toastOptions);
       return false;
     } else if (password === "") {
       toast.error("Mật khẩu là bắt buộc.", toastOptions);
@@ -49,19 +49,19 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (validateForm()) {
-      const { usernameOrPhone, password } = values;
+      const { email, password } = values;
+      console.log("Form Values:", { email, password });
       try {
-        const { data } = await axios.post(loginRoute, {
-          usernameOrPhone,
-          password,
-        });
-        if (data.status === false) {
-          toast.error(data.msg, toastOptions);
-        } else if (data.status === true) {
+        const response = await axios.post(loginRoute, { email, password });
+        console.log(response.data); // Log response để kiểm tra
+        if (response.data.status === false) {
+          toast.error(response.data.msg, toastOptions);
+        } else if (response.data.status === true) {
           localStorage.setItem(
             process.env.REACT_APP_LOCALHOST_KEY,
-            JSON.stringify(data.user)
+            JSON.stringify(response.data.user)
           );
+          setValues({ email: "", password: "" }); // Reset state
           navigate("/");
         }
       } catch (error) {
@@ -70,7 +70,6 @@ export default function Login() {
     }
   };
 
-
   const handleFocus = (name) => {
     setIsFocused({ ...isFocused, [name]: true });
   };
@@ -78,6 +77,7 @@ export default function Login() {
   const handleBlur = (name) => {
     setIsFocused({ ...isFocused, [name]: false });
   };
+
   return (
     <div className="login">
       <ToastContainer />
@@ -98,17 +98,16 @@ export default function Login() {
                 <span style={{color:"#626262", marginBottom:40}}>Đăng nhập bằng tài khoản Chatwave</span>
                 <div className="input-item" style={{ position: "relative" }}>
                   <input
-                    type="text"
-                    name="usernameOrPhone"  
+                    type="email"
+                    name="email"  
                     onChange={handleChange}
-                    min="3"
-                    onFocus={() => handleFocus("usernameOrPhone")}
-                    onBlur={() => handleBlur("usernameOrPhone")}
+                    onFocus={() => handleFocus("email")}
+                    onBlur={() => handleBlur("email")}
                   />
                   <div
-                    className={`b ${values.usernameOrPhone !== "" || isFocused.usernameOrPhone ? "active1" : ""}`}
+                    className={`b ${values.email !== "" || isFocused.email ? "active1" : ""}`}
                   >
-                    Tên đăng nhập hoặc số điện thoại
+                    Email
                   </div>
                 </div>
                 <div className="input-item" style={{ position: "relative" }}>

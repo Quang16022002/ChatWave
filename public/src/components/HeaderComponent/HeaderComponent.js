@@ -1,16 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './HeaderComponent.scss';
 import { AppstoreOutlined, SecurityScanOutlined, LockOutlined, FormatPainterOutlined,
   SwapOutlined, CommentOutlined, ShopOutlined, PicLeftOutlined, WindowsOutlined ,
-  UserOutlined,PhoneOutlined,LinkOutlined,GroupOutlined
+  UserOutlined,PhoneOutlined,LinkOutlined,MailOutlined
  } from "@ant-design/icons";
 import { Modal } from 'antd';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import styled from "styled-components";
+import Logout from '../Logout';
+import { detailUserRoute, logoutRoute } from '../../utils/APIRoutes';
 
 const HeaderComponent = () => {
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [isSettingModalVisible, setIsSettingModalVisible] = useState(false); // State for the setting modal
   const [isAccountModalVisible, setIsAccountModalVisible] = useState(false); // State for the account modal
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const id = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id;
+        const response = await axios.get(`${detailUserRoute}/${id}`);
+        setUserData(response.data); 
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+    console.log(userData)
+  }, []);
   const togglePopover = () => {
     setIsPopoverVisible(!isPopoverVisible);
   };
@@ -44,6 +66,17 @@ const HeaderComponent = () => {
   const handleAccountModalCancel = () => {
     setIsAccountModalVisible(false);
   };
+  const handLogOutClick = async () => {
+    const id = await JSON.parse(
+      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+    )._id;
+    const data = await axios.get(`${logoutRoute}/${id}`);
+    if (data.status === 200) {
+      localStorage.clear();
+      navigate("/login");
+    }
+  };
+
 
   return (
     <div className='Header'>
@@ -75,13 +108,14 @@ const HeaderComponent = () => {
                 />
               </div>
               <div className='inf-username-header-component'>
-                <h5 style={{ margin: '0' }}>Nguyen Thinh</h5>
-                <p style={{ margin: '0', color: 'gray' }}>@Thinhdeptrai</p>
+                <h5 style={{ margin: '0' }}>{userData?.user.username}</h5>
+                <p style={{ margin: '0', color: 'gray' }}>@{userData?.user.nickname}</p>
               </div>
             </div>
             <h6 onClick={showSettingModal} style={{cursor: 'pointer'}}>Cài đặt</h6>
             <h6 onClick={showAccountModal} style={{cursor: 'pointer'}}>Tài khoản</h6>
-            <h6 href="#" onClick={closePopover} className='close-link'>Đăng xuất</h6>
+            <h6 href="" onClick={handLogOutClick} className='close-link'>Đăng xuất</h6>
+      
           </div>
         )}
       </div>
@@ -181,7 +215,7 @@ const HeaderComponent = () => {
 
         <div className='user-item'>
           <div className='user-item-left'>
-          <UserOutlined style={{paddingRight:'10px'}}/> Họ và tên:
+          <UserOutlined style={{paddingRight:'10px'}}/> Tên người dùng:
           </div>
           <div className='user-item-right'>
           Nguyễn Văn Thịnh
@@ -189,7 +223,7 @@ const HeaderComponent = () => {
         </div>
         <div className='user-item'>
           <div className='user-item-left'>
-          <LinkOutlined style={{paddingRight:'10px'}}/> Tên người dùng:
+          <LinkOutlined style={{paddingRight:'10px'}}/> Biệt danh:
           </div>
           <div className='user-item-right'>
           @Thinhdepzai
@@ -205,7 +239,7 @@ const HeaderComponent = () => {
         </div>
         <div className='user-item'>
           <div className='user-item-left'>
-          <GroupOutlined style={{paddingRight:'10px'}}/> Ngày sinh:
+          <MailOutlined style={{paddingRight:'10px'}}/> Email:
           </div>
           <div className='user-item-right'>
           06/03/2000

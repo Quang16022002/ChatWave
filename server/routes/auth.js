@@ -7,7 +7,10 @@ const {
   getDetailUsers,
   sendFriendRequest, 
   acceptFriendRequest, 
-  rejectFriendRequest 
+  rejectFriendRequest,
+  getFriendRequests,
+  updateUser
+  // getGroupInvitations
 } = require("../controllers/userController");
 
 const { 
@@ -21,6 +24,7 @@ router.post("/login", login);
 router.post("/register", register);
 router.get("/allusers/:id", getAllUsers);
 router.get("/detailUsers/:id", getDetailUsers);
+router.put("/updateUser/:id", updateUser);
 
 router.post("/setavatar/:id", setAvatar);
 router.get("/logout/:id", logOut);
@@ -30,6 +34,8 @@ router.post("/rejectFriendRequest", rejectFriendRequest);
 router.post("/sendGroupInvitation", sendGroupInvitation); 
 router.post("/acceptGroupInvitation", acceptGroupInvitation);
 router.post("/declineGroupInvitation", declineGroupInvitation); 
+router.get("/friendRequests/:id", getFriendRequests);
+// router.get("/groupInvitations/:id", getGroupInvitations);
 
 
 module.exports = router;

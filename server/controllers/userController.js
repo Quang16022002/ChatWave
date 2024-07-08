@@ -1,17 +1,18 @@
 const User = require("../models/userModel");
+
 const bcrypt = require("bcrypt");
 
 module.exports.login = async (req, res, next) => {
   try {
-    const { usernameOrPhone, password } = req.body;
-    const user = await User.findOne({
-      $or: [{ username: usernameOrPhone }, { phoneNumber: usernameOrPhone }],
-    });
+    const { email, password } = req.body;
+    console.log("Request Body:", { email, password }); // Log request body
+    const user = await User.findOne({ email });
+    console.log("User found:", user); // Log found user
     if (!user)
-      return res.json({ msg: "Tên người dùng hoặc mật khẩu không chính xác", status: false });
+      return res.json({ msg: "Email hoặc mật khẩu không chính xác", status: false });
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid)
-      return res.json({ msg: "Tên người dùng hoặc mật khẩu không chính xác", status: false });
+      return res.json({ msg: "Email hoặc mật khẩu không chính xác", status: false });
     const userResponse = user.toObject();
     delete userResponse.password; 
     return res.json({ status: true, user: userResponse });
@@ -19,6 +20,8 @@ module.exports.login = async (req, res, next) => {
     next(ex);
   }
 };
+
+
 
 module.exports.register = async (req, res, next) => {
   try {
@@ -92,17 +95,41 @@ module.exports.logOut = (req, res, next) => {
 module.exports.getDetailUsers = async (req, res, next) => {
   try {
     const userId = req.params.id;
-    console.log('userId',userId)
-    const user = await User.findById(userId).select([
-      "email",
-      "username",
-      "avatarImage",
-      "nickname",
-      "_id",
-    ]);
-    if (!user)
+    console.log('userId', userId);
+    
+    const user = await User.findById(userId)
+      .select(["email", "username", "avatarImage", "nickname", "friends", "friendRequests", "groups", "groupInvitations", "_id"])
+      .populate("friends", "username email avatarImage nickname") // Lấy thông tin bạn bè
+      .populate("friendRequests", "username email avatarImage nickname") // Lấy thông tin yêu cầu kết bạn
+      .populate("groups", "name members") // Lấy thông tin nhóm
+      .populate("groupInvitations", "name members"); // Lấy thông tin lời mời vào nhóm
+    
+    if (!user) {
       return res.json({ msg: "User not found", status: false });
+    }
+
     return res.json({ status: true, user });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.updateUser = async (req, res, next) => {
+  try {
+    const { username, email, phone, avatarImage, nickname } = req.body;
+    const userId = req.params.id;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username, email, phone, avatarImage, nickname },
+      { new: true } 
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    return res.json({ status: true, user: updatedUser });
   } catch (ex) {
     next(ex);
   }
@@ -120,6 +147,10 @@ module.exports.sendFriendRequest = async (req, res, next) => {
       return res.status(400).json({ msg: "Friend request already sent" });
     }
 
+    if (friend.friendRequests.includes(userId)) {
+      return res.status(400).json({ msg: "Friend request already exists from this user" });
+    }
+
     friend.friendRequests.push(userId);
     await friend.save();
 
@@ -128,6 +159,7 @@ module.exports.sendFriendRequest = async (req, res, next) => {
     next(ex);
   }
 };
+
 
 // Chấp nhận yêu cầu kết bạn
 module.exports.acceptFriendRequest = async (req, res, next) => {
@@ -168,6 +200,29 @@ module.exports.rejectFriendRequest = async (req, res, next) => {
     await user.save();
 
     return res.json({ msg: "Friend request rejected" });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+
+// danh sách loiwfn mời nkeets bạn
+module.exports.getFriendRequests = async (req, res, next) => {
+  try {
+    const userId = req.params.id; 
+
+  
+    const user = await User.findById(userId)
+      .populate("friendRequests", "username email avatarImage nickname");
+
+    if (!user) {
+      return res.json({ msg: "User not found", status: false });
+    }
+
+  
+    const friendRequests = user.friendRequests;
+
+    return res.json({ status: true, friendRequests });
   } catch (ex) {
     next(ex);
   }
