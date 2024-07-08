@@ -59,7 +59,7 @@ const HeaderComponent = () => {
         <i style={{ marginRight: 5 }} className="fa-solid fa-moon"></i>
         <img
           style={{ marginRight: 15, cursor: 'pointer' }}
-          src='https://moc247.com/wp-content/uploads/2023/12/loa-mat-voi-101-hinh-anh-avatar-meo-cute-dang-yeu-dep-mat_2.jpg'
+          src='https://cdn-media.sforum.vn/storage/app/media/THANHAN/avartar-anime-89.jpg'
           alt='User Avatar'
           onClick={togglePopover}
         />
@@ -69,8 +69,8 @@ const HeaderComponent = () => {
               <div className='img-inf-header-component'>
                 <img
                   style={{ marginRight: 15, cursor: 'pointer' }}
-                  src='https://moc247.com/wp-content/uploads/2023/12/loa-mat-voi-101-hinh-anh-avatar-meo-cute-dang-yeu-dep-mat_2.jpg'
-                  alt='User Avatar'
+                  src='https://cdn-media.sforum.vn/storage/app/media/THANHAN/avartar-anime-89.jpg'
+                  alt='ar'
                   onClick={togglePopover}
                 />
               </div>
