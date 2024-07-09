@@ -1,9 +1,61 @@
-import React from 'react'
+import React from 'react';
+import "./InvitationFriend.scss";
+import InvitationReceived from '../InvitationComponent/InvitationReceived';
+import { UserOutlined, MoreOutlined, CommentOutlined } from "@ant-design/icons";
+import InvitationSent from '../InvitationComponent/InvitationSent';
+import InvitationSuggest from '../InvitationComponent/InvitationSuggest';
 
 const InvitationFriend = () => {
+  const invitationReceived = Array.from({ length: 4 });
+  const invitationSent = Array.from({ length: 4 });
+  const invitationSuggest = Array.from({ length: 4 });
+
   return (
-    <div>InvitationFriend</div>
-  )
+    <div className='Invitation'>
+      <div className='invitation-phanloai'>
+        <div className='invitation-header'>
+          <p>Lời mời đã nhận</p>
+          <span>4</span>
+        </div>
+        
+        <div className='invitation-content'>
+          <div style={{ height: 'auto'}} className="row" >
+            {invitationReceived.map((_, index) => (
+              <InvitationReceived key={index} />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className='invitation-phanloai'>
+        <div className='invitation-header'>
+          <p>Lời mời đã gửi</p>
+          <span>4</span>
+        </div>
+        
+        <div className='invitation-content'>
+          <div style={{ height: 'auto'}} className="row" >
+            {invitationSent.map((_, index) => (
+              <InvitationSent key={index} /> 
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className='invitation-phanloai'>
+        <div className='invitation-header'>
+          <p>Gợi ý kết bạn</p>
+          <span>4</span>
+        </div>
+        
+        <div className='invitation-content'>
+          <div style={{ height: 'auto'}} className="row" >
+            {invitationSuggest.map((_, index) => (
+              <InvitationSuggest key={index} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default InvitationFriend
+export default InvitationFriend;
