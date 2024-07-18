@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import './HomeFriends.scss';
 import UserFriendsComponent from '../UserFriendsComponent/UserFriendsComponent';
 import { Modal, Button, Input, Select } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const HomeFriends = () => {
+const HomeFriends = ({userData}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
 
+  console.log(userData)
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -23,7 +23,6 @@ const HomeFriends = () => {
     setIsModalVisible(false);
   };
 
-  const userComponents = Array.from({ length: 16 });
 
   return (
     <div style={{ padding: 20 }}>
@@ -50,9 +49,9 @@ const HomeFriends = () => {
         </div>
       </div>
       <div style={{ height: 'auto' }} className="row">
-        {userComponents.map((_, index) => (
-          <UserFriendsComponent key={index} />
-        ))}
+     
+          <UserFriendsComponent userDataFriends={userData?.friends} />
+      
       </div>
       <Modal
         title="Thêm bạn bè"

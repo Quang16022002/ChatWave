@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./HomePage.scss";
 import HomeAll from "../../components/HomeAll/HomeAll";
 import HomeFriends from "../../components/HomeFriends/HomeFriends";
@@ -8,9 +8,29 @@ import HomeTag from "../../components/HomeTag/HomeTag";
 import Robot from "../../assets/Robot2.gif";
 import Homechannel from "../HomechannelPage/Homechannel";
 import HomeFolder from "../../components/HomeFolder/homeFolder"
+import axios from "axios";
+import { detailUserRoute } from "../../utils/APIRoutes";
 const HomePage = () => {
   const [currentComponent, setCurrentComponent] = useState("homeAll");
   const [activeIcon, setActiveIcon] = useState("wallet");
+
+  const[userData, setUserData] = useState(null)
+
+  
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const id = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id
+        const response = await axios.get(`${detailUserRoute}/${id}`)
+
+        setUserData(response.data.user)
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
+    fetchUserData()
+  },[])
+
   const handleIconClick = (icon) => {
     setActiveIcon(icon);
     if (icon === "wallet") {
@@ -96,13 +116,13 @@ const HomePage = () => {
         </div>
       </div>
       <div>
-        {currentComponent === "homeAll" && <HomeAll />}
-        {currentComponent === "homeMessageUnread" && <HomeMessageUnread />}
-        {currentComponent === "homegroup" && <HomeGroup />}
-        {currentComponent === "homeFriends" && <HomeFriends />}
-        {currentComponent === "homeTag" && <HomeTag />}
-        {currentComponent === "homechannel" && <Homechannel />}
-        {currentComponent === "homeFolder" && <HomeFolder/>}
+        {currentComponent === "homeAll" && <HomeAll userData={userData} />}
+        {currentComponent === "homeMessageUnread" && <HomeMessageUnread userData={userData} />}
+        {currentComponent === "homegroup" && <HomeGroup userData={userData} />}
+        {currentComponent === "homeFriends" && <HomeFriends userData={userData} />}
+        {currentComponent === "homeTag" && <HomeTag userData={userData} />}
+        {currentComponent === "homechannel" && <Homechannel userData={userData} />}
+        {currentComponent === "homeFolder" && <HomeFolder userData={userData} />}
       </div>
     </div>
   );

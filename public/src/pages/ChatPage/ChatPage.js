@@ -1,68 +1,105 @@
-import React, { useState } from 'react';
-import './ChatPage.scss'
-import TrendComponent from '../../components/TrendComponent/TrendComponent';
-import ChatFriendsComponent from '../../components/ChatFriendsComponent/ChatFriendsComponent';
+import React, { useEffect, useState } from "react";
+import "./ChatPage.scss";
+import axios from "axios";
+import ChatFriendsComponent from "../../components/ChatFriendsComponent/ChatFriendsComponent";
+import { detailUserRoute, recieveMessageRoute, sendMessageRoute } from "../../utils/APIRoutes";
+import { io } from "socket.io-client";
 
 const ChatPage = () => {
   const [activeTab, setActiveTab] = useState('chat-friends');
-  const [currentComponent, setCurrentComponent] = useState('chatFriends');
+  const [friends, setFriends] = useState([]);
+  const [currentFriend, setCurrentFriend] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
 
-  const handleTabClick = (tab) => {
+  const socket = io("http://localhost:3001");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const id = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id;
+        const response = await axios.get(`${detailUserRoute}/${id}`);
+        setFriends(response.data.user.friends);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    if (currentFriend) {
+      socket.emit("add-user", JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id);
+
+      socket.on("msg-recieve", (msg) => {
+        setMessages((prevMessages) => [...prevMessages, { fromSelf: false, message: msg }]);
+      });
+    }
+  }, [currentFriend]);
+
+  const handleTabClick = async (tab, friend = null) => {
     setActiveTab(tab);
-    if (tab === 'chat-friends') {
-      setCurrentComponent('chatFriends');
+    setCurrentFriend(friend);
+
+    if (friend) {
+      const userId = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id;
+      const friendId = friend._id;
+      const response = await axios.get(recieveMessageRoute(userId, friendId));
+      setMessages(response.data);
     }
-    if (tab === 'Chat-1') {
-      setCurrentComponent('chat1');
-    }
-    if (tab === 'Chat-2') {
-      setCurrentComponent('chat2');
-    }
-    if (tab === 'Chat-3') {
-      setCurrentComponent('chat3');
-    }
-    if (tab === 'Chat-4') {
-      setCurrentComponent('chat4');
-    }
-    // Add more conditions if you have other components to show for different tabs
   };
+
+  const handleInputChange = (e) => {
+    setNewMessage(e.target.value);
+  };
+
+  const handleSendMessage = async () => {
+    const userId = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id;
+    const data = {
+      from: userId,
+      to: currentFriend._id,
+      text: newMessage,
+    };
+
+    socket.emit("send-msg", {
+      to: currentFriend._id,
+      msg: newMessage,
+    });
+
+    await axios.post(sendMessageRoute, data);
+    setMessages((prevMessages) => [...prevMessages, { fromSelf: true, message: { text: newMessage } }]);
+    setNewMessage("");
+  };
+
   return (
     <div className="ChatPage">
       <div className='ChatPage-header d-flex'>
         <ul className='d-flex'>
           <li
-          className={activeTab === 'chat-friends' ? 'active-chat' : ''} 
-          onClick={() => handleTabClick('chat-friends')}
-          ><i style={{marginRight:5, color:'rgb(2, 230, 161)', fontSize:20}} class="fa-solid fa-droplet"></i>Bạn bè</li>
-          <li
-          className={activeTab === 'chat-1' ? 'active-chat' : ''} 
-          onClick={() => handleTabClick('chat-1')}
+            className={activeTab === 'chat-friends' ? 'active-chat' : ''} 
+            onClick={() => handleTabClick('chat-friends')}
           >
-            <img src='https://cellphones.com.vn/sforum/wp-content/uploads/2024/02/anh-avatar-cute-95.jpg'/>
-            Nguyễn Tuân</li>
-          <li
-           className={activeTab === 'chat-2' ? 'active-chat' : ''} 
-           onClick={() => handleTabClick('chat-2')}
-          >
-            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYwyHQmE53Lfk8lPBtwL4CGA80jpbKVESEI84g2QktFGxJvgnWKlFbt1N3s0gzaEykKY&usqp=CAU'/>
-            Văn Thịnh</li>
-          <li
-           className={activeTab === 'chat-3' ? 'active-chat' : ''} 
-           onClick={() => handleTabClick('chat-3')}
-          >
-            <img src='https://i.pinimg.com/736x/24/21/85/242185eaef43192fc3f9646932fe3b46.jpg'/>
-            Đình Quang</li>
-          <li 
-             className={activeTab === 'chat-4' ? 'active-chat' : ''} 
-             onClick={() => handleTabClick('chat-4')}
-          ><i style={{marginRight:5, color:'rgb(7, 37, 230)', fontSize:20}} class="fa-solid fa-droplet"></i>KH Đức</li>
-          
-       <li> <i class="fa-solid fa-plus"></i></li>
+            <i style={{marginRight:5, color:'rgb(2, 230, 161)', fontSize:20}} className="fa-solid fa-droplet"></i>
+            Bạn bè
+          </li>
+          {friends.map((friend, index) => (
+            <li
+              key={index}
+              className={activeTab === `chat-${index}` ? 'active-chat' : ''}
+              onClick={() => handleTabClick(`chat-${index}`, friend)}
+            >
+              <img src={friend.avatarImage} alt={friend.username} />
+              {friend.username}
+            </li>
+          ))}
+          <li><i className="fa-solid fa-plus"></i></li>
         </ul>
       </div>
 
-      {currentComponent === 'chatFriends' && <ChatFriendsComponent/>}
-      {}
+      {(activeTab === 'chat-friends' || activeTab.startsWith('chat-')) && (
+        <ChatFriendsComponent friend={currentFriend} messages={messages} newMessage={newMessage} handleInputChange={handleInputChange} handleSendMessage={handleSendMessage} />
+      )}
     </div>
   );
 };
