@@ -6,15 +6,20 @@ const MessageSchema = mongoose.Schema(
       text: { type: String, required: true },
       media: { type: String, default: "" } 
     },
-    sender: {
+    from: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
+      required: true,
+    },
+    to: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     group: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Group",
-      required: true,
+      required: false,
     },
     status: {
       type: String,

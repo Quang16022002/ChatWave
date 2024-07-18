@@ -1,41 +1,51 @@
+const mongoose = require("mongoose");
 const Messages = require("../models/messageModel");
-const User = require("../models/userModel");
-module.exports.getMessages = async (req, res, next) => {
+
+module.exports.getMessages = async (req, res) => {
   try {
-    const { from, to } = req.body;
+    const { from, to } = req.query;
+    console.log("Query parameters:", { from, to });
+
+    // Kiểm tra giá trị của from và to có hợp lệ hay không
+    if (!mongoose.Types.ObjectId.isValid(from) || !mongoose.Types.ObjectId.isValid(to)) {
+      return res.status(400).json({ message: "Invalid 'from' or 'to' ObjectId" });
+    }
 
     const messages = await Messages.find({
-      users: {
-        $all: [from, to],
-      },
-    }).sort({ updatedAt: 1 });
+      $or: [
+        { from, to },
+        { from: to, to: from }
+      ]
+    }).sort({ createdAt: 1 });
 
+    console.log("Messages found:", messages);
     const projectedMessages = messages.map((msg) => {
       return {
-        fromSelf: msg.sender.toString() === from,
-        message: msg.message.text,
+        fromSelf: msg.from.toString() === from,
+        message: msg.message,
       };
     });
+
     res.json(projectedMessages);
-  } catch (ex) {
-    next(ex);
+  } catch (error) {
+    console.error("Error retrieving messages:", error);
+    res.status(500).json({ message: "Error retrieving messages", error });
   }
 };
 
 module.exports.addMessage = async (req, res, next) => {
   try {
-    const { from, to, message } = req.body;
+    const { from, to, text } = req.body;
     const data = await Messages.create({
-      message: { text: message },
-      users: [from, to],
-      sender: from,
+      message: { text: text },
+      from: from,
+      to: to,
     });
 
     if (data) return res.json({ msg: "Message added successfully." });
     else return res.json({ msg: "Failed to add message to the database" });
   } catch (ex) {
+    console.error("Error adding message:", ex);
     next(ex);
   }
 };
-
-
