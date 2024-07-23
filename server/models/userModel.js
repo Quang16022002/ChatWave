@@ -24,11 +24,17 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  bio: {
+    type: String,
+    default: "",
+  },
  
   avatarImage: {
     type: String,
     default: "",
   },
+  
+
   nickname: {
     type: String,
     default: "",

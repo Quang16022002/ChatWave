@@ -55,6 +55,8 @@ const ChatPage = () => {
   };
 
   const handleSendMessage = async () => {
+    if (!newMessage.trim()) return;
+
     const userId = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id;
     const data = {
       from: userId,
@@ -62,14 +64,20 @@ const ChatPage = () => {
       text: newMessage,
     };
 
-    socket.emit("send-msg", {
-      to: currentFriend._id,
-      msg: newMessage,
-    });
+    console.log("Sending message data:", data); // Debug line
 
-    await axios.post(sendMessageRoute, data);
-    setMessages((prevMessages) => [...prevMessages, { fromSelf: true, message: { text: newMessage } }]);
-    setNewMessage("");
+    try {
+      socket.emit("send-msg", {
+        to: currentFriend._id,
+        msg: newMessage,
+      });
+
+      await axios.post(sendMessageRoute, data);
+      setMessages((prevMessages) => [...prevMessages, { fromSelf: true, message: { text: newMessage } }]);
+      setNewMessage(""); // Clear input field after sending message
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
   };
 
   return (
@@ -98,7 +106,13 @@ const ChatPage = () => {
       </div>
 
       {(activeTab === 'chat-friends' || activeTab.startsWith('chat-')) && (
-        <ChatFriendsComponent friend={currentFriend} messages={messages} newMessage={newMessage} handleInputChange={handleInputChange} handleSendMessage={handleSendMessage} />
+        <ChatFriendsComponent 
+          friend={currentFriend}
+          messages={messages}
+          inputValue={newMessage}
+          handleInputChange={handleInputChange}
+          handleSendMessage={handleSendMessage}
+        />
       )}
     </div>
   );

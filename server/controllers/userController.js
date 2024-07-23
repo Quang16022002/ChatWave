@@ -98,7 +98,7 @@ module.exports.getDetailUsers = async (req, res, next) => {
     console.log('userId', userId);
     
     const user = await User.findById(userId)
-      .select(["email", "username","phone", "avatarImage", "nickname", "friends", "friendRequests", "groups", "groupInvitations", "_id"])
+      .select(["email", "username","phone", "avatarImage", "nickname", "friends", "friendRequests", "groups", "groupInvitations", "_id", "bio"])
       .populate("friends", "username email avatarImage nickname phone")
       .populate("friendRequests", "username email avatarImage nickname, phone") // Lấy thông tin yêu cầu kết bạn
       .populate("groups", "name members") // Lấy thông tin nhóm
@@ -114,24 +114,29 @@ module.exports.getDetailUsers = async (req, res, next) => {
   }
 };
 
-module.exports.updateUser = async (req, res, next) => {
+module.exports.updateUser = async (req, res) => {
   try {
-    const { username, email, phone, avatarImage, nickname } = req.body;
-    const userId = req.params.id;
+      const userId = req.params.id;
+      const { username, email, phone, nickname, bio, avatarImage } = req.body;
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { username, email, phone, avatarImage, nickname },
-      { new: true } 
-    );
+      // Tìm và cập nhật thông tin người dùng
+      const updatedUser = await User.findByIdAndUpdate(userId, {
+          username,
+          email,
+          phone,
+          nickname,
+          bio,
+          avatarImage
+      }, { new: true });
 
-    if (!updatedUser) {
-      return res.status(404).json({ msg: "User not found" });
-    }
+      if (!updatedUser) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
 
-    return res.json({ status: true, user: updatedUser });
-  } catch (ex) {
-    next(ex);
+      res.status(200).json({ success: true, user: updatedUser });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 

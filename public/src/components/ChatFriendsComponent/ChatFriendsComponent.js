@@ -62,17 +62,16 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
                   <input
                     value={inputValue}
                     onChange={handleInputChange}
-                    placeholder="Nhập tin nhắn..." />
+                    placeholder="Nhập tin nhắn..." 
+                  />
                   <i className="fa-solid fa-face-smile"></i>
                 </div>
                 <div className="ChatFriendsComponent-item-bottom-message-right">
-                  {
-                    inputValue ? (
-                      <i className="fa-solid fa-paper-plane" onClick={handleSendMessage}></i>
-                    ) : (
-                      <i className="fa-solid fa-thumbs-up"></i>
-                    )
-                  }
+                  {inputValue.trim() ? (
+                    <i className="fa-solid fa-paper-plane" onClick={handleSendMessage}></i>
+                  ) : (
+                    <i className="fa-solid fa-thumbs-up"></i>
+                  )}
                 </div>
               </div>
             </div>
