@@ -164,7 +164,7 @@ const ChatPage = () => {
               {friend.username}
             </li>
           ))}
-          
+          <li>+</li>
         </ul>
       </div>
 
