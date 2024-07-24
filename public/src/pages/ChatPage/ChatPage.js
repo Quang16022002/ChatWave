@@ -2,26 +2,31 @@ import React, { useEffect, useState } from "react";
 import "./ChatPage.scss";
 import axios from "axios";
 import ChatFriendsComponent from "../../components/ChatFriendsComponent/ChatFriendsComponent";
-import { detailUserRoute, recieveMessageRoute, sendMessageRoute } from "../../utils/APIRoutes";
+import {
+  detailUserRoute,
+  recieveMessageRoute,
+  sendMessageRoute,
+} from "../../utils/APIRoutes";
 import { io } from "socket.io-client";
 
 const ChatPage = () => {
-  const [activeTab, setActiveTab] = useState('chat-friends');
+  const [activeChats, setActiveChats] = useState([]); // List of currently active chat tabs
   const [friends, setFriends] = useState([]);
-  const [currentFriend, setCurrentFriend] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [messages, setMessages] = useState({});
+  const [newMessages, setNewMessages] = useState({});
 
   const socket = io("http://localhost:3001");
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const id = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id;
+        const id = JSON.parse(
+          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+        )._id;
         const response = await axios.get(`${detailUserRoute}/${id}`);
         setFriends(response.data.user.friends);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
 
@@ -29,38 +34,79 @@ const ChatPage = () => {
   }, []);
 
   useEffect(() => {
-    if (currentFriend) {
-      socket.emit("add-user", JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id);
+    if (activeChats.length > 0) {
+      socket.emit(
+        "add-user",
+        JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+          ._id
+      );
 
       socket.on("msg-recieve", (msg) => {
-        setMessages((prevMessages) => [...prevMessages, { fromSelf: false, message: msg }]);
+        setMessages((prevMessages) => ({
+          ...prevMessages,
+          [msg.from]: [
+            ...(prevMessages[msg.from] || []),
+            { fromSelf: false, message: msg },
+          ],
+        }));
       });
     }
-  }, [currentFriend]);
+  }, [activeChats]);
 
-  const handleTabClick = async (tab, friend = null) => {
-    setActiveTab(tab);
-    setCurrentFriend(friend);
+  const handleTabClick = async (friend) => {
+    const friendId = friend._id;
+    const isActive = activeChats.some((chat) => chat._id === friendId);
 
-    if (friend) {
-      const userId = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id;
-      const friendId = friend._id;
-      const response = await axios.get(recieveMessageRoute(userId, friendId));
-      setMessages(response.data);
+    if (isActive) {
+      // Remove friend from active chats
+      setActiveChats((prevChats) =>
+        prevChats.filter((chat) => chat._id !== friendId)
+      );
+    } else {
+      // Add friend to active chats
+      setActiveChats((prevChats) => [...prevChats, friend]);
+
+      // Fetch messages for the new chat
+      const userId = JSON.parse(
+        localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+      )._id;
+
+      try {
+        const response = await axios.get(recieveMessageRoute(userId, friendId));
+
+        setMessages((prevMessages) => ({
+          ...prevMessages,
+          [friendId]: response.data,
+        }));
+
+        setNewMessages((prevNewMessages) => ({
+          ...prevNewMessages,
+          [friendId]: "", // Initialize the new message input for this friend
+        }));
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
     }
   };
 
-  const handleInputChange = (e) => {
-    setNewMessage(e.target.value);
+  const handleInputChange = (e, friendId) => {
+    const { value } = e.target;
+    setNewMessages((prevNewMessages) => ({
+      ...prevNewMessages,
+      [friendId]: value,
+    }));
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (friendId) => {
+    const newMessage = newMessages[friendId];
     if (!newMessage.trim()) return;
 
-    const userId = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))._id;
+    const userId = JSON.parse(
+      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+    )._id;
     const data = {
       from: userId,
-      to: currentFriend._id,
+      to: friendId,
       text: newMessage,
     };
 
@@ -68,13 +114,24 @@ const ChatPage = () => {
 
     try {
       socket.emit("send-msg", {
-        to: currentFriend._id,
+        to: friendId,
         msg: newMessage,
       });
 
       await axios.post(sendMessageRoute, data);
-      setMessages((prevMessages) => [...prevMessages, { fromSelf: true, message: { text: newMessage } }]);
-      setNewMessage(""); // Clear input field after sending message
+
+      setMessages((prevMessages) => ({
+        ...prevMessages,
+        [friendId]: [
+          ...(prevMessages[friendId] || []),
+          { fromSelf: true, message: { text: newMessage } },
+        ],
+      }));
+
+      setNewMessages((prevNewMessages) => ({
+        ...prevNewMessages,
+        [friendId]: "", // Clear the input for this friend after sending
+      }));
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -82,38 +139,60 @@ const ChatPage = () => {
 
   return (
     <div className="ChatPage">
-      <div className='ChatPage-header d-flex'>
-        <ul className='d-flex'>
-          <li
-            className={activeTab === 'chat-friends' ? 'active-chat' : ''} 
-            onClick={() => handleTabClick('chat-friends')}
+      <div className="ChatPage-header d-flex">
+        <ul className="d-flex">
+          {/* <li
+            
           >
-            <i style={{marginRight:5, color:'rgb(2, 230, 161)', fontSize:20}} className="fa-solid fa-droplet"></i>
-            Bạn bè
-          </li>
-          {friends.map((friend, index) => (
+            <i
+              style={{ marginRight: 5, color: "rgb(2, 230, 161)", fontSize: 20 }}
+              className="fa-solid fa-droplet"
+            ></i>
+            Danh sách bạn bè
+          </li> */}
+          {friends.map((friend) => (
             <li
-              key={index}
-              className={activeTab === `chat-${index}` ? 'active-chat' : ''}
-              onClick={() => handleTabClick(`chat-${index}`, friend)}
+              key={friend._id}
+              className={
+                activeChats.some((chat) => chat._id === friend._id)
+                  ? "active-chat"
+                  : ""
+              }
+              onClick={() => handleTabClick(friend)}
             >
               <img src={friend.avatarImage} alt={friend.username} />
               {friend.username}
             </li>
           ))}
-          <li><i className="fa-solid fa-plus"></i></li>
+          
         </ul>
       </div>
 
-      {(activeTab === 'chat-friends' || activeTab.startsWith('chat-')) && (
-        <ChatFriendsComponent 
-          friend={currentFriend}
-          messages={messages}
-          inputValue={newMessage}
-          handleInputChange={handleInputChange}
-          handleSendMessage={handleSendMessage}
-        />
-      )}
+      <div>
+      <div className="d-flex window-chat">
+          {activeChats.length > 0 ? (
+            activeChats.map((friend) => (
+              <div
+                style={{ width: "33%", height: "100%" }}
+                key={friend._id}
+                className="window-chat-item active"
+              >
+                <ChatFriendsComponent
+                  friend={friend}
+                  messages={messages[friend._id] || []}
+                  inputValue={newMessages[friend._id] || ""}
+                  handleInputChange={(e) => handleInputChange(e, friend._id)}
+                  handleSendMessage={() => handleSendMessage(friend._id)}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="no-chat-active">
+              Chọn bạn bè để bắt đầu
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 .ChatFriendsComponent-item {
- height: 100vh;
+ 
     .ChatFriendsComponent-item-header {
         background-image: linear-gradient(rgb(252, 208, 126), rgb(255, 253, 247));
         padding: 0 12px;
@@ -23,9 +23,8 @@
     border-left:  1px solid rgb(252, 246, 235);
 }
 .ChatFriendsComponent-item-body {
-    margin-left: 12px;
+    // margin-left: 12px;
     // padding: 10px;
-    height: 74%;
     display: flex;
     flex-direction: column;
     .ChatFriendsComponent-time {
@@ -40,7 +39,7 @@
 }
 .ChatFriendsComponent-item-bottom {
     height: 100%;
-    margin-left: 12px;
+    // margin-left: 12px;
 
 }
 .ChatFriendsComponent-content-chat-item {
@@ -81,17 +80,24 @@
   
 }
 .ChatFriendsComponent-content {
-    height: 90%;
+    height: 710px;
+    width: 100%;
+    padding-bottom: 20px;
     overflow-y: auto;
 }
 ::-webkit-scrollbar {
     width: 3px; 
-    background-color: rgb(245, 195, 108);
+    background-color: rgb(255, 255, 255);
     border-radius: 5px;
+  }
+  .ChatFriendsComponent-item-bottom {
+    flex: 1;
+
   }
 
   .ChatFriendsComponent-item-bottom-icon {
-    border: 1px solid rgb(250, 237, 215);
+    border-top: 1px solid rgb(250, 237, 215);
+    border-bottom: 1px solid rgb(250, 237, 215);
     height: 4%;
 
     .ChatFriendsComponent-item-bottom-icon-left {
@@ -126,6 +132,7 @@
   }
   .ChatFriendsComponent-item-bottom-message {
     height: 6%;
+    height: 40px;
   }
   .ChatFriendsComponent-item-bottom-message-left {
     width: 90%;
@@ -149,6 +156,7 @@
   }
   .ChatFriendsComponent-item-bottom-message-right {
     display: flex;
+   
     flex: 1;
     justify-content: center;
     > i {
@@ -156,4 +164,8 @@
         color: rgb(252, 186, 18);
         cursor: pointer;
     }
+  }
+  .ChatFriendsComponent {
+    height: 90vh;
+    border-right: 2px solid rgb(245, 195, 108);
   }

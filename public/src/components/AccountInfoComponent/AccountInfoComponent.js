@@ -66,7 +66,6 @@ const AccountInfoComponent = ({ userData, onClose ,fetchUserData}) => {
     },
     showUploadList: false, 
   };
-  console.log(avatarImage)
 
   return (
     <div className="account-info-container">

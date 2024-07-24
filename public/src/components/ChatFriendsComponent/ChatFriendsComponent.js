@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './ChatFriendsComponent.scss';
 
 const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange, handleSendMessage }) => {
+  const chatContentRef = useRef(null);
+
+  useEffect(() => {
+    // Scroll to the bottom of the chat content every time messages change
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+    }
+  }, [messages]);
   return (
     <div className="ChatFriendsComponent">
       {friend ? (
-        <div className="row">
-          <div className="ChatFriendsComponent-item col-md-4 col-sm-6 px-0">
+          <div className="ChatFriendsComponent-item  px-0">
             <div className="ChatFriendsComponent-item-header">
               <div className="d-flex align-items-center">
                 <img
@@ -29,20 +36,18 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
               </div>
             </div>
             <div className="ChatFriendsComponent-item-body">
-              <div className="ChatFriendsComponent-time">02/06/2024</div>
-              <div className="ChatFriendsComponent-content">
-                {messages.map((msg, index) => (
-                  <div key={index} className={`ChatFriendsComponent-content-chat-item${msg.fromSelf ? "-me" : ""} py-2`}>
-                    {!msg.fromSelf && (
-                      <img
-                        src={friend.avatarImage}
-                        alt="chat-avatar"
-                      />
-                    )}
-                    <p>{msg.message.text}</p>
-                  </div>
-                ))}
-              </div>
+            
+            <div className="ChatFriendsComponent-content" ref={chatContentRef}>
+              {messages.map((msg, index) => (
+                <div key={index} className={`ChatFriendsComponent-content-chat-item${msg.fromSelf ? "-me" : ""} py-2`}>
+                  {!msg.fromSelf && (
+                    <img src={friend.avatarImage} alt="chat-avatar" />
+                  )}
+                  <p>{msg.message.text}</p>
+                </div>
+              ))}
+            
+            </div>
             </div>
             <div className="ChatFriendsComponent-item-bottom">
               <div className="ChatFriendsComponent-item-bottom-icon d-flex">
@@ -76,7 +81,6 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
               </div>
             </div>
           </div>
-        </div>
       ) : (
         <p>Chọn một bạn bè để bắt đầu trò chuyện</p>
       )}

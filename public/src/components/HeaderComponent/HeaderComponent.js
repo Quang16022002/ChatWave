@@ -1,9 +1,7 @@
-// HeaderComponent.jsx
 import React, { useEffect, useState } from 'react';
 import './HeaderComponent.scss';
 import { AppstoreOutlined, SecurityScanOutlined, LockOutlined, FormatPainterOutlined,
   SwapOutlined, CommentOutlined, ShopOutlined, PicLeftOutlined, WindowsOutlined,
-  UserOutlined, PhoneOutlined, LinkOutlined, MailOutlined
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
