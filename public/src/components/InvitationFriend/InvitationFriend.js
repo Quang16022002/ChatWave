@@ -5,31 +5,36 @@ import { UserOutlined, MoreOutlined, CommentOutlined } from "@ant-design/icons";
 import InvitationSent from '../InvitationComponent/InvitationSent';
 import InvitationSuggest from '../InvitationComponent/InvitationSuggest';
 
-const InvitationFriend = () => {
-  const invitationReceived = Array.from({ length: 4 });
-  const invitationSent = Array.from({ length: 4 });
-  const invitationSuggest = Array.from({ length: 4 });
+const InvitationFriend = ({friendRequests, userId}) => {
 
+  
+  const invitationSent = Array.from({ length: 1});
+  const invitationSuggest = Array.from({ length: 1 });
+  console.log("friendRequests",friendRequests)
   return (
     <div className='Invitation'>
       <div className='invitation-phanloai'>
         <div className='invitation-header'>
           <p>Lời mời đã nhận</p>
-          <span>4</span>
+          <span>{friendRequests.length}</span>
         </div>
         
         <div className='invitation-content'>
           <div style={{ height: 'auto'}} className="row" >
-            {invitationReceived.map((_, index) => (
-              <InvitationReceived key={index} />
-            ))}
+          {friendRequests.length > 0  ? (
+            friendRequests?.map ((request) => (
+              <InvitationReceived key={request._id} request={request} userId={userId} />
+            ))
+          ):(
+            <p>Không có lời mời kết bạn nào</p>
+          )}
           </div>
         </div>
       </div>
       <div className='invitation-phanloai'>
         <div className='invitation-header'>
           <p>Lời mời đã gửi</p>
-          <span>4</span>
+          <span>1</span>
         </div>
         
         <div className='invitation-content'>

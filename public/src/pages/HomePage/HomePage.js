@@ -54,7 +54,7 @@ const HomePage = () => {
 
   return (
     <div className="HomePage">
-      <img className="Robot" src={Robot} />
+      <img className="robot" src={Robot}/>
       <div
         style={{
           color: "rgb(245, 196, 105)))",

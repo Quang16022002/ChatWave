@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./ChatPage.scss";
 import axios from "axios";
+import anh1 from '../../assets/anh1.jpg'
+import anh2 from '../../assets/anh2.jpg'
+import anh3 from '../../assets/anh3.jpg'
+import anh4 from '../../assets/anh4.png'
+import anh5 from '../../assets/anh5.jpg'
 import ChatFriendsComponent from "../../components/ChatFriendsComponent/ChatFriendsComponent";
 import {
   detailUserRoute,
@@ -8,6 +13,7 @@ import {
   sendMessageRoute,
 } from "../../utils/APIRoutes";
 import { io } from "socket.io-client";
+import Slider from "react-slick";
 
 const ChatPage = () => {
   const [activeChats, setActiveChats] = useState([]); // List of currently active chat tabs
@@ -58,15 +64,12 @@ const ChatPage = () => {
     const isActive = activeChats.some((chat) => chat._id === friendId);
 
     if (isActive) {
-      // Remove friend from active chats
       setActiveChats((prevChats) =>
         prevChats.filter((chat) => chat._id !== friendId)
       );
     } else {
-      // Add friend to active chats
       setActiveChats((prevChats) => [...prevChats, friend]);
 
-      // Fetch messages for the new chat
       const userId = JSON.parse(
         localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
       )._id;
@@ -137,19 +140,27 @@ const ChatPage = () => {
     }
   };
 
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
+
   return (
     <div className="ChatPage">
       <div className="ChatPage-header d-flex">
         <ul className="d-flex">
-          {/* <li
-            
-          >
+          <li>
             <i
               style={{ marginRight: 5, color: "rgb(2, 230, 161)", fontSize: 20 }}
               className="fa-solid fa-droplet"
             ></i>
             Danh sách bạn bè
-          </li> */}
+          </li>
           {friends.map((friend) => (
             <li
               key={friend._id}
@@ -169,11 +180,11 @@ const ChatPage = () => {
       </div>
 
       <div>
-      <div className="d-flex window-chat">
+        <div className="d-flex window-chat">
           {activeChats.length > 0 ? (
             activeChats.map((friend) => (
               <div
-                style={{ width: "33%", height: "100%" }}
+                style={{ width: "33.33%", height: "100%" }}
                 key={friend._id}
                 className="window-chat-item active"
               >
@@ -188,7 +199,7 @@ const ChatPage = () => {
             ))
           ) : (
             <div className="no-chat-active">
-              Chọn bạn bè để bắt đầu
+             Chọn bạn bè để bắt đầu chò chuyện.
             </div>
           )}
         </div>

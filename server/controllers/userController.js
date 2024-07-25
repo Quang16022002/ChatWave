@@ -218,7 +218,7 @@ module.exports.getFriendRequests = async (req, res, next) => {
 
   
     const user = await User.findById(userId)
-      .populate("friendRequests", "username email avatarImage nickname");
+      .populate("friendRequests", "username email avatarImage nickname phone");
 
     if (!user) {
       return res.json({ msg: "User not found", status: false });
@@ -228,6 +228,31 @@ module.exports.getFriendRequests = async (req, res, next) => {
     const friendRequests = user.friendRequests;
 
     return res.json({ status: true, friendRequests });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.searchFriendByPhone = async (req, res, next) => {
+  try {
+    const { phone } = req.body;
+
+    // Kiểm tra xem số điện thoại đã được cung cấp chưa
+    if (!phone) {
+      return res.status(400).json({ msg: "Phone number is required" });
+    }
+
+    // Tìm kiếm người dùng dựa trên số điện thoại
+    const user = await User.findOne({ phone }).select(
+      "username email avatarImage nickname phone"
+    );
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Trả về thông tin của người dùng đã tìm thấy
+    return res.json({ status: true, user });
   } catch (ex) {
     next(ex);
   }

@@ -9,7 +9,8 @@ const {
   acceptFriendRequest, 
   rejectFriendRequest,
   getFriendRequests,
-  updateUser
+  updateUser,
+  searchFriendByPhone
   // getGroupInvitations
 } = require("../controllers/userController");
 
@@ -36,6 +37,6 @@ router.post("/acceptGroupInvitation", acceptGroupInvitation);
 router.post("/declineGroupInvitation", declineGroupInvitation); 
 router.get("/friendRequests/:id", getFriendRequests);
 // router.get("/groupInvitations/:id", getGroupInvitations);
-
+router.post('/search-by-phone', searchFriendByPhone);
 
 module.exports = router;
