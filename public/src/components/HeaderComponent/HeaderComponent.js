@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import './HeaderComponent.scss';
-import { AppstoreOutlined, SecurityScanOutlined, LockOutlined, FormatPainterOutlined,
-  SwapOutlined, CommentOutlined, ShopOutlined, PicLeftOutlined, WindowsOutlined,
+import {
+  AppstoreOutlined,
+  SecurityScanOutlined,
+  LockOutlined,
+  FormatPainterOutlined,
+  SwapOutlined,
+  CommentOutlined,
+  ShopOutlined,
+  PicLeftOutlined,
+  WindowsOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { detailUserRoute, logoutRoute } from '../../utils/APIRoutes';
 import AccountInfoComponent from '../AccountInfoComponent/AccountInfoComponent';
-import Logout from '../Logout';
 import { Modal } from 'antd';
+
 const HeaderComponent = () => {
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [isSettingModalVisible, setIsSettingModalVisible] = useState(false);
@@ -29,12 +37,9 @@ const HeaderComponent = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
+
   const togglePopover = () => {
     setIsPopoverVisible(!isPopoverVisible);
-  };
-
-  const closePopover = () => {
-    setIsPopoverVisible(false);
   };
 
   const showSettingModal = () => {
@@ -47,18 +52,7 @@ const HeaderComponent = () => {
     setIsPopoverVisible(false);
   };
 
-  const handleSettingModalOk = () => {
-    setIsSettingModalVisible(false);
-  };
-
-  const handleSettingModalCancel = () => {
-    setIsSettingModalVisible(false);
-  };
-
-  const handleAccountModalOk = () => {
-    setIsAccountModalVisible(false);
-  };
-
+  // Định nghĩa hàm handleAccountModalCancel để đóng modal tài khoản
   const handleAccountModalCancel = () => {
     setIsAccountModalVisible(false);
   };
@@ -81,15 +75,18 @@ const HeaderComponent = () => {
       </div>
       <div className='Header-center'>
         <AppstoreOutlined />
-        <i style={{ marginLeft: 10 }} className="fa-solid fa-map-location-dot"></i>
+        <i
+          style={{ marginLeft: 10, cursor: 'pointer' }}
+          className="fa-solid fa-map-location-dot"
+          onClick={() => navigate('/map')}
+        ></i>
       </div>
       <div className='Header-right'>
         <i className="fa-solid fa-cloud-arrow-up"></i>
         <i style={{ marginRight: 5 }} className="fa-solid fa-moon"></i>
         <img
           style={{ marginRight: 15, cursor: 'pointer' }}
-          src={userData?.user.avatarImage
-          }
+          src={userData?.user.avatarImage}
           alt='User Avatar'
           onClick={togglePopover}
         />
@@ -99,8 +96,7 @@ const HeaderComponent = () => {
               <div className='img-inf-header-component'>
                 <img
                   style={{ marginRight: 15, cursor: 'pointer' }}
-                  src={userData?.user.avatarImage
-                  }
+                  src={userData?.user.avatarImage}
                   alt='ar'
                   onClick={togglePopover}
                 />
@@ -118,15 +114,19 @@ const HeaderComponent = () => {
       </div>
 
       {isAccountModalVisible && (
-        <AccountInfoComponent userData={userData} onClose={handleAccountModalCancel}  fetchUserData={fetchUserData}/>
+        <AccountInfoComponent
+          userData={userData}
+          onClose={handleAccountModalCancel}
+          fetchUserData={fetchUserData}
+        />
       )}
 
       {/* Modal for Settings */}
       <Modal
         title="Cài đặt"
         visible={isSettingModalVisible}
-        onOk={handleSettingModalOk}
-        onCancel={handleSettingModalCancel}
+        onOk={() => setIsSettingModalVisible(false)}
+        onCancel={() => setIsSettingModalVisible(false)}
         footer={null}
       >
         <div className='line'></div>
@@ -163,42 +163,40 @@ const HeaderComponent = () => {
           </div>
         </div>
         <div className='setting-container-item'>
-             <div className='setting-container-item-left'>
-               <CommentOutlined style={{ fontSize: '24px' }} />
-             </div>
-             <div className='setting-container-item-right'>
-               <h6 style={{ margin: '0' }}>Thông báo</h6>
-             </div>
-           </div>
-           <div className='setting-container-item'>
-             <div className='setting-container-item-left'>
-               <ShopOutlined style={{ fontSize: '24px' }} />
-             </div>
-             <div className='setting-container-item-right'>
-               <h6 style={{ margin: '0' }}>Cửa hàng</h6>
-             </div>
-           </div>
-           <div className='setting-container-item'>
-             <div className='setting-container-item-left'>
-               <PicLeftOutlined style={{ fontSize: '24px' }} />
-             </div>
-             <div className='setting-container-item-right'>
-               <h6 style={{ margin: '0' }}>Thư viện</h6>
-             </div>
-           </div>
-           <div className='setting-container-item'>
-             <div className='setting-container-item-left'>
-               <WindowsOutlined style={{ fontSize: '24px' }} />
-             </div>
-             <div className='setting-container-item-right'>
-               <h6 style={{ margin: '0' }}>Ứng dụng</h6>
-             </div>
-           </div>
-         </Modal>
-       </div>
-     );
-   };
+          <div className='setting-container-item-left'>
+            <CommentOutlined style={{ fontSize: '24px' }} />
+          </div>
+          <div className='setting-container-item-right'>
+            <h6 style={{ margin: '0' }}>Thông báo</h6>
+          </div>
+        </div>
+        <div className='setting-container-item'>
+          <div className='setting-container-item-left'>
+            <ShopOutlined style={{ fontSize: '24px' }} />
+          </div>
+          <div className='setting-container-item-right'>
+            <h6 style={{ margin: '0' }}>Cửa hàng</h6>
+          </div>
+        </div>
+        <div className='setting-container-item'>
+          <div className='setting-container-item-left'>
+            <PicLeftOutlined style={{ fontSize: '24px' }} />
+          </div>
+          <div className='setting-container-item-right'>
+            <h6 style={{ margin: '0' }}>Thư viện</h6>
+          </div>
+        </div>
+        <div className='setting-container-item'>
+          <div className='setting-container-item-left'>
+            <WindowsOutlined style={{ fontSize: '24px' }} />
+          </div>
+          <div className='setting-container-item-right'>
+            <h6 style={{ margin: '0' }}>Ứng dụng</h6>
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+};
 
-   export default HeaderComponent;
-
-           
+export default HeaderComponent;
