@@ -49,6 +49,7 @@ html, body {
   .item-content-myapp-left{
     display: flex;
     padding-bottom: 10px;
+    
   }
   
   .myapp-middle{
@@ -133,17 +134,17 @@ html, body {
   }
 
   .content-1-1-myapp-middle{
-    padding: 50px 20px;
+    padding: 20px;
     display: flex;
   }
 
   .content-1-2-myapp-middle{
-    padding: 20px;
+    padding: 0px 20px;
     border-bottom: 1px solid orange;
   }
 
   .content2-1-myapp-middle{
-    padding:20px;
+    padding: 10px 20px;
     display: flex;
   }
 
@@ -152,9 +153,9 @@ html, body {
   }
 
   .chat-content2-2-myapp-middle{
-    width: 60%;
+    width: 95%;
     background: #fff7f7;
-    padding: 10px;
+    padding: 0px 10px;
     border-radius: 10px;
   }
   .connect-github-myapp {
@@ -221,9 +222,12 @@ html, body {
       color: #888;
   }
 }
-
+.reply-myapp{
+  display: flex;
+  gap: 5px;
+}
   .myapp-right {
-  width: 10%;
+  width: 5%;
   background: #fff4e0;
   height: 100%;
   text-align: center;

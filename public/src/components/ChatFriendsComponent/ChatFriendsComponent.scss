@@ -168,4 +168,22 @@
   .ChatFriendsComponent {
     height: 90vh;
     border-right: 2px solid rgb(245, 195, 108);
+    position: relative; // Đảm bảo vị trí tương đối cho các phần tử con
+
+  }
+
+  .ChatFriendsComponent-popup {
+    position: absolute;
+    z-index: 1000;
+    margin-left: 23%;
+  }
+  
+  .ChatFriendsComponent-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 145%;
+    text-align: center;
   }
