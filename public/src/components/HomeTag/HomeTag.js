@@ -91,10 +91,10 @@ const HomeTag = () => {
 
   const friendsMenu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="friend1" className="dropdown-item" style={{borderColor: 'blue'}}>
+      <Menu.Item key="friend1" className="custom-dropdown-menu"className="dropdown-item" style={{borderColor: 'blue'}}>
         Bạn bè
       </Menu.Item>
-      <Menu.Item key="friend2" className="dropdown-item" style={{borderColor: 'green'}}>
+      <Menu.Item key="friend2" className="custom-dropdown-menu"className="dropdown-item" style={{borderColor: 'green'}}>
         Đồng nghiệp
       </Menu.Item>
     </Menu>
@@ -102,10 +102,10 @@ const HomeTag = () => {
 
   const messagesMenu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="travel" className="dropdown-item" style={{borderColor: 'purple'}}>
+      <Menu.Item key="travel" className="custom-dropdown-menu" style={{borderColor: 'purple'}}>
         Du lịch
       </Menu.Item>
-      <Menu.Item key="work" className="dropdown-item" style={{borderColor: 'orange'}}>
+      <Menu.Item key="work" className="custom-dropdown-menu" style={{borderColor: 'orange'}}>
         Công việc
       </Menu.Item>
     </Menu>
@@ -113,10 +113,10 @@ const HomeTag = () => {
 
   const documentsMenu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="webshopee" className="dropdown-item" style={{borderColor: 'red'}}>
+      <Menu.Item key="webshopee" className="custom-dropdown-menu"style={{borderColor: 'red'}}>
         Web Shopify
       </Menu.Item>
-      <Menu.Item key="companyabc" className="dropdown-item" style={{borderColor: 'purple'}}>
+      <Menu.Item key="companyabc" className="custom-dropdown-menu" style={{borderColor: 'purple'}}>
         Công ty abc
       </Menu.Item>
     </Menu>
@@ -143,7 +143,7 @@ const HomeTag = () => {
     <div className='tag_all'>
       <div className='tag-menu'>
         <div className='tag-menu-left1'>
-          <Dropdown 
+          <Dropdown
             overlay={currentComponent === 'contacts' ? friendsMenu : (currentComponent === 'messages' ? messagesMenu : documentsMenu)} 
             trigger={['click']}
           >
@@ -181,7 +181,7 @@ const HomeTag = () => {
             </div>
           </div>
           <div className='menu-right-2'>
-            <h5 style={{padding:'0px'}}>Sắp xếp</h5>
+            <h5>Sắp xếp</h5>
             <div className='menu-tag-add' style={{ border: '1px solid black' }}>
               Gần đây
             </div>
