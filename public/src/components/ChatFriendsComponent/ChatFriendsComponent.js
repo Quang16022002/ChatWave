@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ChatFriendsComponent.scss';
-
+import Chatbot from '../../assets/bot-chat-1.jpg' 
 const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange, handleSendMessage }) => {
   const chatContentRef = useRef(null);
   const robotIconRef = useRef(null);
@@ -112,8 +112,25 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
       {popupVisible && (
         <div className="ChatFriendsComponent-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
           <div className="ChatFriendsComponent-popup-content">
-            <button onClick={closePopup}>Đóng</button>
-            <p>Đây là nội dung popup của bạn!</p>
+            <div className='Suggest-bot-chatfriendcomponents'>
+              <div className='Suggest-bot-chatfriendcomponents-left'>
+                <h6>                  Tôi có thể gợi ý câu trả lời phù hợp, cùng với biểu tượng biểu cảm
+                </h6>
+              </div>
+              <div className='Suggest-bot-chatfriendcomponents-right'>
+                  <img src={Chatbot} style={{width:"100%"}}></img>
+              </div>
+            </div>
+            <div className='another-suggest-botchat'>
+              <div className='another-suggest-botchat-left'>
+                <button>
+                  Câu trả lời khác
+                </button>
+              </div>
+              <div className='another-suggest-botchat-right'>
+              
+              </div>
+            </div>
           </div>
         </div>
       )}

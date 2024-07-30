@@ -185,5 +185,33 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     max-width: 400px;
     width: 145%;
-    text-align: center;
   }
+
+  .Suggest-bot-chatfriendcomponents{
+    display: flex;
+    width: 100%;
+  }
+
+  .Suggest-bot-chatfriendcomponents-left{
+    width: 80%;
+    background: #f0f0f0;
+    border-radius: 10px;
+  }
+  .Suggest-bot-chatfriendcomponents-left h6{
+    padding: 10px;    
+    color:gray
+}
+
+  .Suggest-bot-chatfriendcomponents-right{
+    width: 20%;
+  }
+
+  .another-suggest-botchat{
+    display: flex;
+  }
+  .another-suggest-botchat-left button{
+    background-color: #ffe4b4;
+    border-radius: 20px;
+    border: 1px solid #ffe4b4;
+    height: 30px;    
+}

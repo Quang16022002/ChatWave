@@ -13,9 +13,7 @@ const Contacts = () => {
           <div className='danhba-item-header-left-1'>
             <UserOutlined /> Bạn bè
           </div>
-          <div className='danhba-item-header-right-1'>
-            <MoreOutlined />
-          </div>
+         
         </div>
         <div className='danhba-item-content'>
           <div style={{ height: 'auto' }} className="row">
