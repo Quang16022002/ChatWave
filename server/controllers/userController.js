@@ -1,5 +1,5 @@
 const User = require("../models/userModel");
-
+const Group = require("../models/groupModel"); 
 const bcrypt = require("bcrypt");
 
 module.exports.login = async (req, res, next) => {
@@ -101,8 +101,8 @@ module.exports.getDetailUsers = async (req, res, next) => {
       .select(["email", "username","phone", "avatarImage", "nickname", "friends", "friendRequests", "groups", "groupInvitations", "_id", "bio"])
       .populate("friends", "username email avatarImage nickname phone")
       .populate("friendRequests", "username email avatarImage nickname, phone") // Lấy thông tin yêu cầu kết bạn
-      .populate("groups", "name members") // Lấy thông tin nhóm
-      .populate("groupInvitations", "name members"); // Lấy thông tin lời mời vào nhóm
+      .populate("groups", "name members avatarImage") // Lấy thông tin nhóm
+      .populate("groupInvitations", "name members avatarImage"); // Lấy thông tin lời mời vào nhóm
     
     if (!user) {
       return res.json({ msg: "User not found", status: false });

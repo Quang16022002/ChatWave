@@ -2,7 +2,6 @@ import React from 'react'
 import './Homechannel.scss'
 import ChannelComponent from '../../components/ChannelComponent/ChannelComponent'
 const Homechannel = () => {
-  const userComponents = Array.from({ length: 5 });
 
   return (
     <div  style={{padding:20}}>
@@ -24,9 +23,7 @@ const Homechannel = () => {
       </div>
     </div>
     <div style={{height:'auto'}} className="row">
-    {userComponents.map((_, index) => (
-      <ChannelComponent key={index} />
-    ))}
+      <ChannelComponent />
 
     </div>
   </div>

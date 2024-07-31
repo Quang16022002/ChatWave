@@ -10,13 +10,14 @@ const groupSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
     maxlength: 255,
   },
-  members: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  }],
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   avatarImage: {
     type: String,
     default: "",
@@ -26,5 +27,4 @@ const groupSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-
 module.exports = mongoose.model("Group", groupSchema);

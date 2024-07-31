@@ -14,12 +14,10 @@ const MessageSchema = mongoose.Schema(
     to: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     group: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Group",
-      required: false,
     },
     status: {
       type: String,

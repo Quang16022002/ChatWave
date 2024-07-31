@@ -3,31 +3,34 @@ import "./InvitationPage.scss";
 import InvitationFriend from "../../components/InvitationFriend/InvitationFriend";
 import InvitationGroup from "../../components/InvitationGroup/InvitationGroup";
 import { message } from 'antd';
-import { friendRequestsRoute } from "../../utils/APIRoutes";
+import { friendRequestsRoute,detailUserRoute  } from "../../utils/APIRoutes";
 import axios from "axios";
 const InvitationPage = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [currentComponent, setCurrentComponent] = useState('friend');
   const [friendRequests, setFriendRequests] = useState([]); // Trạng thái lưu trữ lời mời kết bạn
+  const [groupsRequests, setGroupsRequests] = useState([]); // Trạng thái lưu trữ lời mời kết bạn
 
 
 
 const userId = JSON.parse(
   localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
 )._id;
+
 // console.log(userId)
 useEffect(() => {
   if (currentComponent === 'friend') {
     const fetchFriendRequests = async () => {
       try {
         const response = await axios.get(friendRequestsRoute(userId));
+        const data = await axios.get(`${detailUserRoute}/${userId}`);
         const { status, friendRequests } = response.data;
+        
 
-        if (status) {
+        
           setFriendRequests(friendRequests);
-        } else {
-          setFriendRequests([]); 
-        }
+
+        setGroupsRequests(data.data.user.groupInvitations)
       } catch (error) {
         console.error("Lỗi khi lấy lời mời kết bạn:", error);
       }
@@ -62,7 +65,7 @@ const handClick = (item) => {
         >Lời mời vào nhóm</li>
       </ul>
       {currentComponent === 'friend' && <InvitationFriend friendRequests={friendRequests} userId={userId}/>}
-      {currentComponent === 'group' && <InvitationGroup/>}
+      {currentComponent === 'group' && <InvitationGroup groupsRequests = {groupsRequests}/>}
     </div>
   );
 };

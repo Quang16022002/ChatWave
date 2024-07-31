@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Messages = require("../models/messageModel");
+const upload = require('../upload'); // Import Multer middleware
 
+// Lấy tin nhắn giữa 2 người
 module.exports.getMessages = async (req, res) => {
   try {
     const { from, to } = req.query;
@@ -33,11 +35,12 @@ module.exports.getMessages = async (req, res) => {
   }
 };
 
+// Thêm tin nhắn
 module.exports.addMessage = async (req, res, next) => {
   try {
-    const { from, to, text } = req.body;
+    const { from, to, text, media } = req.body; // Thêm trường media
     const data = await Messages.create({
-      message: { text: text },
+      message: { text: text, media: media }, // Cập nhật thêm trường media
       from: from,
       to: to,
     });
@@ -47,5 +50,22 @@ module.exports.addMessage = async (req, res, next) => {
   } catch (ex) {
     console.error("Error adding message:", ex);
     next(ex);
+  }
+};
+
+// Upload file media
+module.exports.uploadMedia = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Không có file nào được tải lên." });
+    }
+
+    // Đường dẫn đến file đã tải lên
+    const fileUrl = `/uploads/${req.file.filename}`;
+
+    res.status(200).json({ fileUrl: fileUrl });
+  } catch (error) {
+    console.error("Error uploading media:", error);
+    res.status(500).json({ message: "Error uploading media", error });
   }
 };

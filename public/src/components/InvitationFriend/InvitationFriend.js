@@ -26,7 +26,7 @@ const InvitationFriend = ({friendRequests, userId}) => {
               <InvitationReceived key={request._id} request={request} userId={userId} />
             ))
           ):(
-            <p>Không có lời mời kết bạn nào</p>
+            <p style={{marginLeft:30}}>Không có lời mời kết bạn nào</p>
           )}
           </div>
         </div>
@@ -48,7 +48,7 @@ const InvitationFriend = ({friendRequests, userId}) => {
       <div className='invitation-phanloai'>
         <div className='invitation-header'>
           <p>Gợi ý kết bạn</p>
-          <span>4</span>
+          <span>1</span>
         </div>
         
         <div className='invitation-content'>

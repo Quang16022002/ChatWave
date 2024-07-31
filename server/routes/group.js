@@ -1,12 +1,12 @@
-const express = require("express");
+
+const express = require('express');
+const { createGroup, sendGroupInvitation, acceptGroupInvitation, declineGroupInvitation } = require('../controllers/groupController');
+
 const router = express.Router();
-const GroupController = require("../controllers/groupController");
 
-
-router.post("/create", GroupController.createGroup);
-router.post("/decline", GroupController.declineGroupInvitation);
-router.post("/accept", GroupController.acceptGroupInvitation);
-router.post("/sent", GroupController.sendGroupInvitation);
-
+router.post('/create', createGroup);
+router.post('/invite', sendGroupInvitation);
+router.post('/accept', acceptGroupInvitation);
+router.post('/decline', declineGroupInvitation);
 
 module.exports = router;

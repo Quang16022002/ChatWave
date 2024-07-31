@@ -169,3 +169,42 @@
     height: 90vh;
     border-right: 2px solid rgb(245, 195, 108);
   }
+
+  /* ChatFriendsComponent.scss */
+.ChatFriendsComponent {
+    position: relative; /* Tạo vị trí tương đối cho các phần tử con */
+  }
+  
+  .ChatFriendsComponent-item-bottom-message-left {
+    position: relative; /* Tạo khối tương đối cho picker */
+  }
+  
+  .emoji-picker-react {
+    position: absolute; /* Vị trí tuyệt đối để di chuyển picker */
+    bottom: 60px; /* Di chuyển picker lên trên so với vị trí nhập */
+    left: 0; /* Căn trái */
+    z-index: 10; /* Đảm bảo picker nằm trên các phần tử khác */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Thêm bóng cho picker */
+    border-radius: 8px; /* Bo góc cho picker */
+  }
+  
+  .emoji-picker-react .emoji-categories {
+    justify-content: space-around;
+  }
+  
+  .emoji-picker-react .emoji-group:before {
+    background-color: transparent; /* Bỏ nền của tiêu đề nhóm */
+  }
+  
+  .chat-file-message {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px 0;
+  }
+  
+  .chat-file-message a {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
