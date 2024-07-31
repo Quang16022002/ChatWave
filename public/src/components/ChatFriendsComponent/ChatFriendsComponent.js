@@ -192,7 +192,7 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
                   }
                 />
                 {isEmojiPickerVisible && (
-                  <Picker pickerStyle={{ position: 'absolute', bottom: '50px', right: '50px' }} onEmojiClick={handleEmojiClick} />
+                  <Picker pickerStyle={{ position: 'absolute', bottom: '60px', right: '60px' }} onEmojiClick={handleEmojiClick} />
                 )}
               </div>
               <div className="ChatFriendsComponent-item-bottom-message-right">
@@ -202,9 +202,7 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
                   <i className="fa-solid fa-thumbs-up" />
                 )}
               </div>
-              <i className="fa-regular fa-image" />
-              <i className="fa-solid fa-note-sticky" />
-              <i className="fa-solid fa-gift" />
+             
             </div>
           </div>
         </div>
