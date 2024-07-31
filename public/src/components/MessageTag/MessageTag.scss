@@ -1,13 +1,12 @@
 
 .danhba-item{
-    margin-top: 20px;
-    
+    position: relative; /* hoặc absolute, fixed */
+      
 }
 
 .danhba-item-header{
     display: flex;
-    border-top: 2px solid green;
-    
+    width: 90%;
 }
 
 .danhba-item-header-left{
