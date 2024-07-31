@@ -169,6 +169,9 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
                   placeholder="Nhập tin nhắn..."
                 />
                 <i className="fa-solid fa-face-smile"></i>
+                {isEmojiPickerVisible && (
+                  <Picker pickerStyle={{ position: 'absolute', bottom: '60px', right: '60px' }} onEmojiClick={handleEmojiClick} />
+                )}
               </div>
               <div className="ChatFriendsComponent-item-bottom-message-right">
                 {inputValue.trim() ? (
