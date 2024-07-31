@@ -122,7 +122,7 @@ const MyApplicationComponent = () => {
                   
                   <div style={{ color: '#ff004d', display: 'inline-block' }}>
                     <UserAddOutlined style={{ fontSize: '30px' }} />
-                  <h4 style={{ display: 'inline' }}> Mời đồng nghiệp tham gia #GAME_GO_DOT_2D</h4>
+                  <h4 style={{ display: 'inline', fontSize: '20px'  }}> Mời đồng nghiệp tham gia #GAME_GO_DOT_2D</h4>
                   </div>
                 </div>
               </div>

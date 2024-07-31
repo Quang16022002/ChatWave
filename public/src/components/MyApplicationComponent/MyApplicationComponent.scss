@@ -5,17 +5,23 @@ html, body {
 .myappall {
     display: flex;
     height: 100vh;
+    font-size: 14px;
   }
   
 
   
   .myapp-left {
+    >a {
+  font-size: 14px;
+
+}
     width: 20%;
     height: 100%;
     border-right: 1px solid orange;
    
   }
   .myapp-left h5 {
+    font-size: 14px;
     margin-top: 10px;
     padding-left: 10px;
   }
@@ -72,6 +78,7 @@ html, body {
   }
 
   .header-myapp-middle-filename h5{
+    font-size: 15px;
     margin-top: 10px;
     padding-left: 10px;
   }
@@ -126,6 +133,7 @@ html, body {
 
   .item-menu-myapp h5{
     margin: 0;
+    font-size: 15px;
   }
 
   .content1-myapp-middle{
@@ -134,11 +142,21 @@ html, body {
   }
 
   .content-1-1-myapp-middle{
+    h1 {
+      font-size: 36px;
+    }
     padding: 20px;
     display: flex;
   }
 
   .content-1-2-myapp-middle{
+    > span > h1{
+      font-size: 25px;
+    }
+    > h1 {
+      font-size: 20px;
+
+    }
     padding: 0px 20px;
     border-bottom: 1px solid orange;
   }
@@ -153,6 +171,9 @@ html, body {
   }
 
   .chat-content2-2-myapp-middle{
+    > h5 {
+      font-size: 16px;
+    }
     width: 95%;
     background: #fff7f7;
     padding: 0px 10px;
