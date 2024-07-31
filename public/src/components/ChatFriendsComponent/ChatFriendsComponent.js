@@ -1,34 +1,72 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ChatFriendsComponent.scss';
-import Chatbot from '../../assets/bot-chat-1.jpg' 
+import Chatbot from '../../assets/bot-chat-1.jpg';
+import book from "../../assets/book.jpg";
+import coin from "../../assets/coin.jpg";
+import pet from "../../assets/pet.jpg";
+import light from "../../assets/light.jpg";
+import time from "../../assets/time.jpg";
 const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange, handleSendMessage }) => {
   const chatContentRef = useRef(null);
   const robotIconRef = useRef(null);
+  const bookmarkIconRef = useRef(null);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+  const [tagsPopupVisible, setTagsPopupVisible] = useState(false);
+  const [tagsPopupPosition, setTagsPopupPosition] = useState({ top: 0, left: 0 });
+  const [tags] = useState(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']); // Danh sách các tag
+  const [bookmarkActive, setBookmarkActive] = useState(false);
+  const [robotActive, setRobotActive] = useState(false);
 
   useEffect(() => {
-    // Scroll to the bottom of the chat content every time messages change
     if (chatContentRef.current) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
     }
   }, [messages]);
 
+   
   const handleRobotClick = () => {
-    if (robotIconRef.current) {
-      const rect = robotIconRef.current.getBoundingClientRect();
-      const popupHeight = 180; // Chiều cao dự kiến của popup, có thể điều chỉnh
-      
-      setPopupPosition({
-        top: rect.top + window.scrollY - popupHeight - 10, // Đặt popup ở trên và cách 10px
-        left: rect.left + window.scrollX - rect.width / 2 // Căn chỉnh theo chiều dọc
-      });
+    if (popupVisible) {
+      closePopup();
+      setRobotActive(false); // Trở lại màu cũ khi tắt popup
+    } else {
+      if (robotIconRef.current) {
+        const rect = robotIconRef.current.getBoundingClientRect();
+        const popupHeight = 180;
+        setPopupPosition({
+          top: rect.top + window.scrollY - popupHeight - 10,
+          left: rect.left + window.scrollX - rect.width / 2,
+        });
+      }
+      setPopupVisible(true);
+      setRobotActive(true); // Đổi màu khi bật popup
     }
-    setPopupVisible(true);
   };
-
   const closePopup = () => {
     setPopupVisible(false);
+  };
+
+  const handleBookmarkClick = () => {
+    if (tagsPopupVisible) {
+      closeTagsPopup();
+      setBookmarkActive(false); // Trở lại màu cũ khi tắt popup
+    } else {
+      if (bookmarkIconRef.current) {
+        const rect = bookmarkIconRef.current.getBoundingClientRect();
+        setTagsPopupPosition({
+          top: rect.top + window.scrollY + rect.height + 10,
+          left: rect.left + window.scrollX,
+        });
+      }
+      setTagsPopupVisible(true);
+      setBookmarkActive(true); // Đổi màu khi bật popup
+    }
+  };
+ 
+  
+
+  const closeTagsPopup = () => {
+    setTagsPopupVisible(false);
   };
 
   return (
@@ -49,7 +87,16 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
                   <h1 style={{ fontSize: 16 }}>{friend.username}</h1>
                 </div>
                 <div className="d-flex align-items-center ChatFriendsComponent-item-header-right">
-                  <i className="fa-regular fa-bookmark"></i>
+                <i
+  className="fa-regular fa-bookmark"
+  onClick={handleBookmarkClick}
+  ref={bookmarkIconRef}
+  style={{
+    cursor: 'pointer',
+    color: bookmarkActive ? '#ff004d' : 'inherit', // Đổi màu khi popup bật
+  }}
+></i>
+
                   <i className="fa-solid fa-magnifying-glass"></i>
                   <i className="fa-solid fa-ellipsis-vertical"></i>
                 </div>
@@ -78,14 +125,19 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
                 <i className="fa-solid fa-gift"></i>
               </div>
               <div
-                className="ChatFriendsComponent-item-bottom-icon-right"
-                onClick={handleRobotClick}
-                ref={robotIconRef}
-                style={{ cursor: 'pointer' }}
-              >
-                <i className="fa-solid fa-robot"></i>
-                <span>Tôi có thể gợi ý câu trả lời cho bạn...</span>
-              </div>
+  className="ChatFriendsComponent-item-bottom-icon-right"
+  onClick={handleRobotClick}
+  ref={robotIconRef}
+  style={{
+    width:'100%',
+    cursor: 'pointer',
+    color: robotActive ? '#ff004d' : 'inherit', // Đổi màu khi popup bật
+  }}
+>
+  <i className="fa-solid fa-robot"></i>
+  <span>Tôi có thể gợi ý câu trả lời cho bạn...</span>
+</div>
+
             </div>
             <div className="ChatFriendsComponent-item-bottom-message d-flex align-items-center">
               <div className="ChatFriendsComponent-item-bottom-message-left">
@@ -110,27 +162,53 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
         <p>Chọn một bạn bè để bắt đầu trò chuyện</p>
       )}
       {popupVisible && (
-        <div className="ChatFriendsComponent-popup" style={{ top: popupPosition.top, left: popupPosition.left }}>
+        <div className="ChatFriendsComponent-popup" style={{ marginLeft:'250px',marginTop:'-210px' }}>
           <div className="ChatFriendsComponent-popup-content">
             <div className='Suggest-bot-chatfriendcomponents'>
               <div className='Suggest-bot-chatfriendcomponents-left'>
-                <h6>                  Tôi có thể gợi ý câu trả lời phù hợp, cùng với biểu tượng biểu cảm
-                </h6>
+                <h6>Tôi có thể gợi ý câu trả lời phù hợp, cùng với biểu tượng biểu cảm</h6>
               </div>
               <div className='Suggest-bot-chatfriendcomponents-right'>
-                  <img src={Chatbot} style={{width:"100%"}}></img>
+                <img src={Chatbot} style={{ width: "100%" }} alt="Chatbot"></img>
               </div>
             </div>
             <div className='another-suggest-botchat'>
               <div className='another-suggest-botchat-left'>
-                <button>
-                  Câu trả lời khác
-                </button>
+                <button>Câu trả lời khác</button>
               </div>
-              <div className='another-suggest-botchat-right'>
-              
-              </div>
+              <div className='another-suggest-botchat-right'></div>
             </div>
+          </div>
+        </div>
+      )}
+      {tagsPopupVisible && (
+        <div className="ChatFriendsComponent-tags-popup" style={{ marginTop:'-770px',width:'100%' }}>
+          <div className="ChatFriendsComponent-tags-popup-content">
+            <div className='item-tag-chat'> 
+              <img src={book} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Sách</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>6</h5>
+            </div>
+            <div className='item-tag-chat'> 
+              <img src={coin} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Tiền xu</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>9</h5>
+            </div><div className='item-tag-chat'> 
+              <img src={pet} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Thú cưng</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>3</h5>
+            </div>
+            <div className='item-tag-chat'> 
+              <img src={light} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Ý tưởng</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>5</h5>
+            </div>
+            <div className='item-tag-chat'> 
+              <img src={time} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Thời gian</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>1</h5>
+            </div>
+            
           </div>
         </div>
       )}
