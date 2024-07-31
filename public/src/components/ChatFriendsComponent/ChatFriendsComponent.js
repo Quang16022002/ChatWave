@@ -156,13 +156,8 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
             <div className="ChatFriendsComponent-item-bottom-icon d-flex">
               <div className="ChatFriendsComponent-item-bottom-icon-left">
                 <i className="fa-solid fa-microphone" />
-                <Upload
-                  beforeUpload={() => false}
-                  onChange={handleFileChange}
-                  showUploadList={false}
-                >
-                  <UploadOutlined />
-                </Upload>
+                
+                 
                 <i className="fa-solid fa-note-sticky" />
                 <i className="fa-solid fa-gift" />
               </div>
@@ -210,14 +205,14 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
         <p>Chọn một bạn bè để bắt đầu trò chuyện</p>
       )}
       {popupVisible && (
-        <div className="ChatFriendsComponent-popup" style={{ marginLeft: '250px', marginTop: '-210px' }}>
+        <div className="ChatFriendsComponent-popup" style={{ marginLeft: '250px', marginTop: '-280px' }}>
           <div className="ChatFriendsComponent-popup-content">
             <div className='Suggest-bot-chatfriendcomponents'>
               <div className='Suggest-bot-chatfriendcomponents-left'>
                 <h6>Tôi có thể gợi ý câu trả lời phù hợp, cùng với biểu tượng biểu cảm</h6>
               </div>
               <div className='Suggest-bot-chatfriendcomponents-right'>
-                <img src={Chatbot} style={{ width: "100%" }} alt="Chatbot" />
+                <img src={Chatbot} style={{ width: 40 }} alt="Chatbot" />
               </div>
             </div>
             <div className='another-suggest-botchat'>
@@ -229,7 +224,7 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
               </div>
               <div className='another-suggest-botchat-right'>
                 <div className='suggest-item'>
-                  <img src={book} alt="book" />
+                  <img style={{width:40}} src={book} alt="book" />
                   <p>Truyện hay</p>
                 </div>
                 <div className='suggest-item'>
