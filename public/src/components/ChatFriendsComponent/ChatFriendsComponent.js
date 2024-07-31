@@ -1,65 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ChatFriendsComponent.scss';
-import { Upload, Input as AntdInput } from 'antd';
-import { UploadOutlined, SmileOutlined } from '@ant-design/icons';
-import Picker from 'emoji-picker-react';
 import Chatbot from '../../assets/bot-chat-1.jpg';
 import book from "../../assets/book.jpg";
 import coin from "../../assets/coin.jpg";
 import pet from "../../assets/pet.jpg";
 import light from "../../assets/light.jpg";
 import time from "../../assets/time.jpg";
-
 const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange, handleSendMessage }) => {
   const chatContentRef = useRef(null);
   const robotIconRef = useRef(null);
   const bookmarkIconRef = useRef(null);
-  const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const [tagsPopupVisible, setTagsPopupVisible] = useState(false);
   const [tagsPopupPosition, setTagsPopupPosition] = useState({ top: 0, left: 0 });
   const [tags] = useState(['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4', 'Tag 5']); // Danh sách các tag
-  const [selectedFile, setSelectedFile] = useState(null);
   const [bookmarkActive, setBookmarkActive] = useState(false);
   const [robotActive, setRobotActive] = useState(false);
-
+  const [detailsPopupVisible, setDetailsPopupVisible] = useState(false);
+  const [ellipsisActive, setEllipsisActive] = useState(false);
+  
   useEffect(() => {
     if (chatContentRef.current) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
     }
   }, [messages]);
 
-  const handleEmojiClick = (event, emojiObject) => {
-    handleInputChange({ target: { value: inputValue + emojiObject.emoji } });
-  };
-
-  const toggleEmojiPicker = () => {
-    setIsEmojiPickerVisible(!isEmojiPickerVisible);
-  };
-
-  const handleFileChange = ({ file }) => {
-    if (file.status === 'done') {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedFile(reader.result);
-      };
-      reader.readAsDataURL(file.originFileObj);
-    }
-  };
-
-  const handleCustomSendMessage = () => {
-    handleSendMessage({
-      message: { text: inputValue, image: selectedFile },
-    });
-    setSelectedFile(null);
-    handleInputChange({ target: { value: '' } });
-  };
-
+   
   const handleRobotClick = () => {
     if (popupVisible) {
       closePopup();
-      setRobotActive(false);
+      setRobotActive(false); // Trở lại màu cũ khi tắt popup
     } else {
       if (robotIconRef.current) {
         const rect = robotIconRef.current.getBoundingClientRect();
@@ -70,10 +41,9 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
         });
       }
       setPopupVisible(true);
-      setRobotActive(true);
+      setRobotActive(true); // Đổi màu khi bật popup
     }
   };
-
   const closePopup = () => {
     setPopupVisible(false);
   };
@@ -81,7 +51,7 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
   const handleBookmarkClick = () => {
     if (tagsPopupVisible) {
       closeTagsPopup();
-      setBookmarkActive(false);
+      setBookmarkActive(false); // Trở lại màu cũ khi tắt popup
     } else {
       if (bookmarkIconRef.current) {
         const rect = bookmarkIconRef.current.getBoundingClientRect();
@@ -91,9 +61,25 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
         });
       }
       setTagsPopupVisible(true);
-      setBookmarkActive(true);
+      setBookmarkActive(true); // Đổi màu khi bật popup
     }
   };
+ 
+  const handleEllipsisClick = () => {
+    if (detailsPopupVisible) {
+      closeDetailsPopup();
+      setEllipsisActive(false); // Trở lại màu cũ khi tắt popup
+    } else {
+      setDetailsPopupVisible(true);
+      setEllipsisActive(true); // Đổi màu khi bật popup
+    }
+  };
+  
+  const closeDetailsPopup = () => {
+    setDetailsPopupVisible(false);
+    setEllipsisActive(false); // Trở lại màu cũ khi tắt popup
+  };
+  
 
   const closeTagsPopup = () => {
     setTagsPopupVisible(false);
@@ -111,43 +97,43 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
                 src={friend.avatarImage}
                 alt="friend-avatar"
               />
-              <div style={{ width: "100%" }} className="d-flex justify-content-between">
+              <div style={{ width: '100%' }} className="d-flex justify-content-between">
                 <div className="infoUser d-flex flex-column">
-                  <p style={{ color: "rgb(255, 18, 89)", fontWeight: 500, marginBottom: 0 }}>Online</p>
+                  <p style={{ color: 'rgb(255, 18, 89)', fontWeight: 500, marginBottom: 0 }}>Online</p>
                   <h1 style={{ fontSize: 16 }}>{friend.username}</h1>
                 </div>
                 <div className="d-flex align-items-center ChatFriendsComponent-item-header-right">
+                <i
+  className="fa-regular fa-bookmark"
+  onClick={handleBookmarkClick}
+  ref={bookmarkIconRef}
+  style={{
+    cursor: 'pointer',
+    color: bookmarkActive ? '#ff004d' : 'inherit', // Đổi màu khi popup bật
+  }}
+></i>
+
+                  <i className="fa-solid fa-magnifying-glass"></i>
                   <i
-                    className="fa-regular fa-bookmark"
-                    onClick={handleBookmarkClick}
-                    ref={bookmarkIconRef}
-                    style={{
-                      cursor: 'pointer',
-                      color: bookmarkActive ? '#ff004d' : 'inherit',
-                    }}
-                  />
-                  <i className="fa-solid fa-magnifying-glass" />
-                  <i className="fa-solid fa-ellipsis-vertical" />
-                </div>
+    className="fa-solid fa-ellipsis-vertical"
+    onClick={handleEllipsisClick}
+    style={{
+      cursor: 'pointer',
+      color: ellipsisActive ? '#ff004d' : 'inherit', // Đổi màu khi popup bật
+    }}
+  ></i>                </div>
               </div>
             </div>
           </div>
           <div className="ChatFriendsComponent-item-body">
             <div className="ChatFriendsComponent-content" ref={chatContentRef}>
               {messages.map((msg, index) => (
-                <div key={index} className={`ChatFriendsComponent-content-chat-item${msg.fromSelf ? "-me" : ""} py-2`}>
-                  {!msg.fromSelf && (
-                    <img src={friend.avatarImage} alt="chat-avatar" />
-                  )}
-                  {msg.message.image ? (
-                    <img
-                      src={msg.message.image}
-                      alt="sent"
-                      className="sent-image"
-                    />
-                  ) : (
-                    <p>{msg.message.text}</p>
-                  )}
+                <div
+                  key={index}
+                  className={`ChatFriendsComponent-content-chat-item${msg.fromSelf ? '-me' : ''} py-2`}
+                >
+                  {!msg.fromSelf && <img src={friend.avatarImage} alt="chat-avatar" />}
+                  <p>{msg.message.text}</p>
                 </div>
               ))}
             </div>
@@ -155,56 +141,42 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
           <div className="ChatFriendsComponent-item-bottom">
             <div className="ChatFriendsComponent-item-bottom-icon d-flex">
               <div className="ChatFriendsComponent-item-bottom-icon-left">
-                <i className="fa-solid fa-microphone" />
-                <Upload
-                  beforeUpload={() => false}
-                  onChange={handleFileChange}
-                  showUploadList={false}
-                >
-                  <UploadOutlined />
-                </Upload>
-                <i className="fa-solid fa-note-sticky" />
-                <i className="fa-solid fa-gift" />
+                <i className="fa-solid fa-microphone"></i>
+                <i className="fa-regular fa-image"></i>
+                <i className="fa-solid fa-note-sticky"></i>
+                <i className="fa-solid fa-gift"></i>
               </div>
               <div
-                className="ChatFriendsComponent-item-bottom-icon-right"
-                onClick={handleRobotClick}
-                ref={robotIconRef}
-                style={{
-                  width: '100%',
-                  cursor: 'pointer',
-                  color: robotActive ? '#ff004d' : 'inherit',
-                }}
-              >
-                <i className="fa-solid fa-robot" />
-                <span>Tôi có thể gợi ý câu trả lời cho bạn...</span>
-              </div>
+  className="ChatFriendsComponent-item-bottom-icon-right"
+  onClick={handleRobotClick}
+  ref={robotIconRef}
+  style={{
+    width:'100%',
+    cursor: 'pointer',
+    color: robotActive ? '#ff004d' : 'inherit', // Đổi màu khi popup bật
+  }}
+>
+  <i className="fa-solid fa-robot"></i>
+  <span>Tôi có thể gợi ý câu trả lời cho bạn...</span>
+</div>
+
             </div>
             <div className="ChatFriendsComponent-item-bottom-message d-flex align-items-center">
               <div className="ChatFriendsComponent-item-bottom-message-left">
-                <AntdInput
-                  style={{ marginLeft: 10, marginTop: 10 }}
+                <input
                   value={inputValue}
                   onChange={handleInputChange}
                   placeholder="Nhập tin nhắn..."
-                  addonAfter={
-                    <SmileOutlined onClick={toggleEmojiPicker} />
-                  }
                 />
-                {isEmojiPickerVisible && (
-                  <Picker pickerStyle={{ position: 'absolute', bottom: '50px', right: '50px' }} onEmojiClick={handleEmojiClick} />
-                )}
+                <i className="fa-solid fa-face-smile"></i>
               </div>
               <div className="ChatFriendsComponent-item-bottom-message-right">
-                {inputValue.trim() || selectedFile ? (
-                  <i className="fa-solid fa-paper-plane" onClick={handleCustomSendMessage} />
+                {inputValue.trim() ? (
+                  <i className="fa-solid fa-paper-plane" onClick={handleSendMessage}></i>
                 ) : (
-                  <i className="fa-solid fa-thumbs-up" />
+                  <i className="fa-solid fa-thumbs-up"></i>
                 )}
               </div>
-              <i className="fa-regular fa-image" />
-              <i className="fa-solid fa-note-sticky" />
-              <i className="fa-solid fa-gift" />
             </div>
           </div>
         </div>
@@ -212,60 +184,57 @@ const ChatFriendsComponent = ({ friend, messages, inputValue, handleInputChange,
         <p>Chọn một bạn bè để bắt đầu trò chuyện</p>
       )}
       {popupVisible && (
-        <div className="ChatFriendsComponent-popup" style={{ marginLeft: '250px', marginTop: '-210px' }}>
+        <div className="ChatFriendsComponent-popup" style={{ marginLeft:'250px',marginTop:'-210px' }}>
           <div className="ChatFriendsComponent-popup-content">
             <div className='Suggest-bot-chatfriendcomponents'>
               <div className='Suggest-bot-chatfriendcomponents-left'>
                 <h6>Tôi có thể gợi ý câu trả lời phù hợp, cùng với biểu tượng biểu cảm</h6>
               </div>
               <div className='Suggest-bot-chatfriendcomponents-right'>
-                <img src={Chatbot} style={{ width: "100%" }} alt="Chatbot" />
+                <img src={Chatbot} style={{ width: "100%" }} alt="Chatbot"></img>
               </div>
             </div>
             <div className='another-suggest-botchat'>
               <div className='another-suggest-botchat-left'>
-                <button>Câu trả lời thông minh</button>
-                <button>Thêm câu trả lời</button>
-                <button>Gợi ý câu hỏi</button>
-                <button>Thêm câu hỏi</button>
+                <button>Câu trả lời khác</button>
               </div>
-              <div className='another-suggest-botchat-right'>
-                <div className='suggest-item'>
-                  <img src={book} alt="book" />
-                  <p>Truyện hay</p>
-                </div>
-                <div className='suggest-item'>
-                  <img src={coin} alt="coin" />
-                  <p>Thẻ quà tặng</p>
-                </div>
-                <div className='suggest-item'>
-                  <img src={pet} alt="pet" />
-                  <p>Thú cưng</p>
-                </div>
-                <div className='suggest-item'>
-                  <img src={light} alt="light" />
-                  <p>Đèn</p>
-                </div>
-                <div className='suggest-item'>
-                  <img src={time} alt="time" />
-                  <p>Thời gian</p>
-                </div>
-              </div>
+              <div className='another-suggest-botchat-right'></div>
             </div>
           </div>
         </div>
       )}
       {tagsPopupVisible && (
-        <div className="ChatFriendsComponent-tags-popup" style={{ marginLeft: tagsPopupPosition.left, marginTop: tagsPopupPosition.top }}>
+        <div className="ChatFriendsComponent-tags-popup" style={{ marginTop:'-770px',width:'100%' }}>
           <div className="ChatFriendsComponent-tags-popup-content">
-            {tags.map((tag, index) => (
-              <div key={index} className="ChatFriendsComponent-tags-popup-item">
-                {tag}
-              </div>
-            ))}
+            <div className='item-tag-chat'> 
+              <img src={book} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Sách</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>6</h5>
+            </div>
+            <div className='item-tag-chat'> 
+              <img src={coin} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Tiền xu</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>9</h5>
+            </div><div className='item-tag-chat'> 
+              <img src={pet} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Thú cưng</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>3</h5>
+            </div>
+            <div className='item-tag-chat'> 
+              <img src={light} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Ý tưởng</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>5</h5>
+            </div>
+            <div className='item-tag-chat'> 
+              <img src={time} style={{width:'30px',height:'30px'}}></img>
+              <h5 style={{paddingTop:'5px',paddingRight:'5px'}}> Thời gian</h5>
+              <h5 style={{color:"#ff004d",paddingTop:'4px'}}>1</h5>
+            </div>
+            
           </div>
         </div>
       )}
+      
     </div>
   );
 };
