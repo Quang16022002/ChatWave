@@ -80,7 +80,7 @@
 
 }
 .ChatFriendsComponent-content {
-  height: 710px;
+  height: 780px;
   width: 100%;
   padding-bottom: 20px;
   overflow-y: auto;
@@ -175,8 +175,7 @@
 .ChatFriendsComponent-popup {
   position: absolute;
   z-index: 1000;
-  margin-bottom: 100px;
-  background-color: aqua;
+  margin-bottom: 120px;
 }
 
 .ChatFriendsComponent-popup-content {
@@ -210,18 +209,110 @@
 .another-suggest-botchat{
   display: flex;
 }
+.another-suggest-botchat-left {
+  width: 90%;
+}
 .another-suggest-botchat-left button{
   background-color: #ffe4b4;
   border-radius: 20px;
   border: 1px solid #ffe4b4;
-  height: 30px;    
+  height: 30px;  
+  padding: 5px;  
+  font-size: 13px;
+  align-items: center;
+  flex-direction: column;
+  margin: 5px;
 }
-
+.another-suggest-botchat-right{
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
 .ChatFriendsComponent-tags-popup {
-  background-color: aqua;
+  border: 1px solid orange;
+  background-color: white;
   position: absolute;
+ 
+}
+.ChatFriendsComponent-tags-popup-content{
+  display: flex;
 }
 .item-tag-chat{
 display: flex;
 padding-right: 5px;
+}
+
+.header-ellipsis-popup{
+  text-align: center;
+  padding: 20px 0px;
+  border-bottom: 1px solid orange;
+}
+
+.informatuon-ellipsis-popup{
+  display: flex;
+  border-bottom: 1px solid orange;
+}
+
+.item-inf-ellipsis-popup{
+  display: flex;
+  padding: 20px;
+  width: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-inf-ellipsis-popup h4{
+  margin: 0px;
+}
+
+.content-ellipsis-popup{
+  max-height: 650px; /* Chiều cao tối đa của phần tử chứa, bạn có thể điều chỉnh theo nhu cầu */
+  overflow-y: auto;  /* Hiển thị thanh cuộn dọc khi nội dung vượt quá chiều cao */
+  border: 1px solid #ddd; /* Thêm viền để làm nổi bật phần tử chứa */
+  box-sizing: border-box; /* Đảm bảo padding và border được tính trong chiều cao */
+}
+
+.item-content-ellipsis-popup{
+  padding: 20px;
+  display: flex;
+  border-bottom: 1px solid orange;
+  align-items: center;
+  gap: 10px  ;
+  flex-wrap: wrap; /* Cho phép các phần tử tự động xuống dòng */
+
+}
+
+.item-content-ellipsis-popup h4{
+  margin: 0px;
+}
+
+.item-link-ellipsis-popup{
+  display: flex;
+}
+
+.item-link-ellipsis-popup-img{
+  width: 25%;
+}
+
+.item-link-ellipsis-popup-inf{
+  width: 75%;
+  padding: 5px;
+}
+
+.security-ellipsis-popup{
+  display: flex;
+  gap: 10px;
+}
+.ChatFriendsComponent-tags-popup-content {
+  display: flex;
+  justify-content: center;
+}
+.item-tag-chat {
+  display: flex;
+  align-items: center;
+ 
+  img {
+    width: 20px;
+  }
 }

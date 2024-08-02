@@ -12,7 +12,7 @@ const UserGroupComponent = ({userDataGroups}) => {
              <div style={{width:'100%'}}  className="d-flex justify-content-between">
                   <div className="infoUser d-flex flex-column ">
                       <h1>{group.name}</h1>
-                      <p style={{color:'rgb(148, 148, 148)'}}>Đình Quang: Tối họp nhé</p>
+                      <p style={{color:'rgb(148, 148, 148)'}}>{group.members.length} thành viên</p>
                   </div>
                   <div style={{marginRight:60}}>
                       <p style={{color:'rgb(148, 148, 148)'}}>54 phút</p>

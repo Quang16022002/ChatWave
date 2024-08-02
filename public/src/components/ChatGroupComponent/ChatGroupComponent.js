@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./ChatFriendsComponent.scss";
-import { Upload, Input as AntdInput, Modal, List, Button, notification } from "antd"; // Thêm notification vào đây
+import { Upload, Input as AntdInput, Modal, Button, notification } from "antd"; // Thêm notification vào đây
 import { UploadOutlined, SmileOutlined } from "@ant-design/icons";
 import Picker from "emoji-picker-react";
 import axios from "axios";
@@ -16,8 +16,10 @@ const ChatGroupComponent = ({
   const chatContentRef = useRef(null);
   const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isInviteModalVisible, setIsInviteModalVisible] = useState(false); // đổi tên biến cho rõ ràng
+  const [isMembersModalVisible, setIsMembersModalVisible] = useState(false);
   const [friends, setFriends] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]); // State để lưu thông tin thành viên
   const [invitedFriends, setInvitedFriends] = useState([]); // Thêm state để theo dõi những người bạn đã mời
 
   // Lấy ID người dùng từ localStorage
@@ -43,6 +45,21 @@ const ChatGroupComponent = ({
 
     fetchFriends();
   }, [userId]);
+
+  // Hàm lấy thông tin chi tiết các thành viên trong nhóm
+  const fetchGroupMembers = async () => {
+    try {
+      const memberDetails = await Promise.all(
+        group.members.map(async (memberId) => {
+          const response = await axios.get(`${detailUserRoute}/${memberId}`);
+          return response.data.user;
+        })
+      );
+      setGroupMembers(memberDetails);
+    } catch (error) {
+      console.error("Error fetching group members:", error);
+    }
+  };
 
   const handleEmojiClick = (event, emojiObject) => {
     handleInputChange({ target: { value: inputValue + emojiObject.emoji } });
@@ -76,12 +93,21 @@ const ChatGroupComponent = ({
     handleInputChange({ target: { value: "" } });
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const showInviteModal = () => {
+    setIsInviteModalVisible(true);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+  const handleInviteModalCancel = () => {
+    setIsInviteModalVisible(false);
+  };
+
+  const showMembersModal = async () => {
+    await fetchGroupMembers(); // Lấy thông tin thành viên trước khi hiển thị modal
+    setIsMembersModalVisible(true);
+  };
+
+  const handleMembersModalCancel = () => {
+    setIsMembersModalVisible(false);
   };
 
   const handleInviteFriend = async (friendId) => {
@@ -126,14 +152,19 @@ const ChatGroupComponent = ({
               <div style={{ width: "100%" }} className="d-flex justify-content-between">
                 <div className="infoGroup d-flex flex-column">
                   <h1 style={{ fontSize: 16 }}>{group.name}</h1>
-                  <p style={{ margin: 0 }}>
-                    <i className="fa-regular fa-user"></i> {group.members.length} thành viên
+                  <p   onClick={showMembersModal} style={{ margin: 0, cursor:'pointer' }}>
+                    <i
+                      className="fa-regular fa-user"
+                      onClick={showMembersModal}
+                      style={{ cursor: "pointer" }}
+                    ></i>{" "}
+                    {group.members.length} thành viên
                   </p>
                 </div>
                 <div className="d-flex align-items-center ChatGroupComponent-item-header-right">
                   <i className="fa-regular fa-bookmark"></i>
                   <i className="fa-solid fa-magnifying-glass"></i>
-                  <i className="fa-solid fa-ellipsis-vertical" onClick={showModal}></i>
+                  <i className="fa-solid fa-ellipsis-vertical" onClick={showInviteModal}></i>
                 </div>
               </div>
             </div>
@@ -203,34 +234,44 @@ const ChatGroupComponent = ({
       )}
 
       <Modal
-        title="Mời bạn bè vào nhóm"
-        visible={isModalVisible}
-        onCancel={handleCancel}
+        title="Thêm bạn vào nhóm"
+        visible={isInviteModalVisible}
+        onCancel={handleInviteModalCancel}
         footer={null}
       >
-        <List
-          itemLayout="horizontal"
-          dataSource={friends}
-          renderItem={(friend) => (
-            <List.Item
-              actions={[
-                <Button
-                  type="primary"
-                  disabled={invitedFriends.includes(friend._id)} // Vô hiệu hóa nút nếu đã mời
-                  onClick={() => handleInviteFriend(friend._id)}
-                >
-                  {invitedFriends.includes(friend._id) ? "Đã mời" : "Mời vào nhóm"} {/* Thay đổi text của nút */}
-                </Button>,
-              ]}
-            >
-              <List.Item.Meta
-                avatar={<img src={friend.avatarImage} alt="friend-avatar" style={{ width: 40, height: 40, borderRadius: '50%' }} />}
-                title={friend.username}
-                description={friend.email}
-              />
-            </List.Item>
-          )}
-        />
+        <ul style={{marginTop:20}} className="friend-list">
+          {friends.map((friend) => (
+            <li style={{listStyle:'none', margin:10}} key={friend._id} className="friend-item">
+              <img style={{width:50, borderRadius:'50%'}} src={friend.avatarImage} alt="friend-avatar" />
+              <span style={{marginLeft:10, marginRight:50}}>{friend.username}</span>
+              <Button
+              style={{float:'right'}}
+                type="primary"
+                onClick={() => handleInviteFriend(friend._id)}
+                disabled={invitedFriends.includes(friend._id)}
+              >
+                {invitedFriends.includes(friend._id) ? "Đã mời" : "Mời vào nhóm"}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </Modal>
+
+      {/* Modal hiển thị danh sách thành viên */}
+      <Modal
+        title="Danh sách thành viên"
+        visible={isMembersModalVisible}
+        onCancel={handleMembersModalCancel}
+        footer={null}
+      >
+        <ul className="member-list">
+          {groupMembers.map((member) => (
+            <li style={{listStyle:'none', marginTop:20}} key={member._id} className="member-item">
+              <img style={{width:50, borderRadius:"50%", marginRight:20}} src={member.avatarImage} alt="member-avatar" />
+              <span>{member.username}</span>
+            </li>
+          ))}
+        </ul>
       </Modal>
     </div>
   );

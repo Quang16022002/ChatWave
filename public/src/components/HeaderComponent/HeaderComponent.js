@@ -86,7 +86,7 @@ const HeaderComponent = () => {
         <i style={{ marginRight: 5 }} className="fa-solid fa-moon"></i>
         <img
           style={{ marginRight: 15, cursor: 'pointer' }}
-          src={userData?.user.avatarImage}
+          src={userData?.user.avatarImage  || `https://inkythuatso.com/uploads/thumbnails/800/2023/03/9-anh-dai-dien-trang-inkythuatso-03-15-27-03.jpg`}
           alt='User Avatar'
           onClick={togglePopover}
         />
@@ -96,9 +96,10 @@ const HeaderComponent = () => {
               <div className='img-inf-header-component'>
                 <img
                   style={{ marginRight: 15, cursor: 'pointer' }}
-                  src={userData?.user.avatarImage}
+                  src={userData?.user.avatarImage || `https://inkythuatso.com/uploads/thumbnails/800/2023/03/9-anh-dai-dien-trang-inkythuatso-03-15-27-03.jpg`}
                   alt='ar'
                   onClick={togglePopover}
+                  
                 />
               </div>
               <div className='inf-username-header-component'>

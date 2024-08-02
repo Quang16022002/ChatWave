@@ -38,13 +38,16 @@ export default function Register() {
 
   useEffect(() => {
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/");
+      navigate("/login");
     }
-  }, []);
+  }, [navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
 
   const handleValidation = () => {
@@ -67,8 +70,8 @@ export default function Register() {
         toastOptions
       );
       return false;
-    } else if (email === "") {
-      toast.error("Email là bắt buộc.", toastOptions);
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error("Email không hợp lệ.", toastOptions);
       return false;
     } else if (phone === "") {
       toast.error("Số điện thoại là bắt buộc.", toastOptions);
@@ -82,38 +85,48 @@ export default function Register() {
     event.preventDefault();
     if (handleValidation()) {
       const { email, username, password, phone } = values;
-      const { data } = await axios.post(registerRoute, {
-        username,
-        email,
-        password,
-        phone,
-      });
+      try {
+        const { data } = await axios.post(registerRoute, {
+          username,
+          email,
+          password,
+          phone,
+        });
 
-      if (data.status === false) {
-        toast.error(data.msg, toastOptions);
-      }
-      if (data.status === true) {
-        localStorage.setItem(
-          process.env.REACT_APP_LOCALHOST_KEY,
-          JSON.stringify(data.user)
-        );
-        navigate("/");
+        if (data.status === false) {
+          toast.error(data.msg, toastOptions);
+        }
+        if (data.status === true) {
+          localStorage.setItem(
+            process.env.REACT_APP_LOCALHOST_KEY,
+            JSON.stringify(data.user)
+          );
+          navigate("/login");
+        }
+      } catch (error) {
+        toast.error("Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại.", toastOptions);
       }
     }
   };
 
   const handleFocus = (name) => {
-    setIsFocused({ ...isFocused, [name]: true });
+    setIsFocused((prevIsFocused) => ({
+      ...prevIsFocused,
+      [name]: true,
+    }));
   };
 
   const handleBlur = (name) => {
-    setIsFocused({ ...isFocused, [name]: false });
+    setIsFocused((prevIsFocused) => ({
+      ...prevIsFocused,
+      [name]: false,
+    }));
   };
 
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
-        <ToastContainer/>
+        <ToastContainer />
         <div className="container">
           <div className="row">
             <div style={{ padding: 0, margin: 0 }} className="col-md-6">
